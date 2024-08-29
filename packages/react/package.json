@@ -1,0 +1,36 @@
+{
+  "name": "@depjack/react",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "Depjack adapter for React specific features.",
+  "author": "Marcel Haßlinger <contact@marhali.de>",
+  "license": "MIT",
+  "funding": "https://github.com/marhali/depjack#donation",
+  "homepage": "https://github.com/marhali/depjack",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marhali/depjack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marhali/depjack/issues"
+  },
+  "keywords": [
+    "enterprise",
+    "typed",
+    "dependency",
+    "injection",
+    "react"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "@depjack/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  }
+}

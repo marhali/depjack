@@ -1,0 +1,34 @@
+{
+  "name": "@depjack/core",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "Depjack standalone core.",
+  "author": "Marcel Haßlinger <contact@marhali.de>",
+  "license": "MIT",
+  "funding": "https://github.com/marhali/depjack#donation",
+  "homepage": "https://github.com/marhali/depjack",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marhali/depjack.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/marhali/depjack/issues"
+  },
+  "keywords": [
+    "enterprise",
+    "typed",
+    "dependency",
+    "injecton",
+    "core"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  }
+}
