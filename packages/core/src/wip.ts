@@ -13,21 +13,20 @@ type DbService = {
 type Dependency<T, Group> = {
   lazy: boolean;
   needs: DependencyGroupKeys<Group>[];
-  factory: () => Promise<T>
+  factory: () => Promise<T>;
 };
 
 type DependencyGroup<T> = {
-  [K in keyof T]: T[K]
+  [K in keyof T]: T[K];
 };
 
 type DependencyGroupKeys<T> = T extends Dependency<any, any>
-? never
-: {
+  ? never
+  : {
     [K in keyof T]-?: K extends string | number
       ? `${K}` | `${K}.${DependencyGroupKeys<T[K]>}`
       : never;
   }[keyof T];
-
 
 type MyDeps = DependencyGroup<{
   auth: Dependency<AuthService, MyDeps>,
