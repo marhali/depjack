@@ -1,0 +1,39 @@
+{
+  "name": "@depjack/examples-simple",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Depjack example utilizing basic usage in any environment.",
+  "author": "Marcel Haßlinger <contact@marhali.de>",
+  "license": "MIT",
+  "funding": "https://github.com/marhali/depjack#donation",
+  "homepage": "https://github.com/marhali/depjack",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marhali/depjack.git",
+    "directory": "examples/simple"
+  },
+  "bugs": {
+    "url": "https://github.com/marhali/depjack/issues"
+  },
+  "keywords": [
+    "enterprise",
+    "typed",
+    "dependency",
+    "injecton",
+    "example",
+    "simple"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "@depjack/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  }
+}
