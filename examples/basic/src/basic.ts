@@ -1,50 +1,111 @@
-import DependencyGroup from "@depjack/core/definition/dependency-group";
-import Dependency from "@depjack/core/definition/dependency";
-import defineDependencyTree from "@depjack/core/definition/define-dependency-tree";
+import { DepsDefinition } from '@depjack/core/definition/definition';
+import { DepsFactory } from '@depjack/core/factory';
+import createDepsRuntime from '@depjack/core/runtime/create-deps-runtime.ts';
 
-type AuthService = {
-  state: string;
-  login: () => Promise<void>
-}
+interface AuthService {} // -> !lazy, authClient
+interface EmployeeService {} // lazy, EmployeeRepository
+interface DepartmentService {} // lazy, DepartmentRepository, EmployeeRepository
 
-type ApiService = {
-  fetch: () => Promise<boolean>;
-}
+interface EmployeeRepository {} // lazy, DbClient
+interface DepartmentRepository {} // lazy, DbClient
 
-type DbService = {
-  query: () => Promise<string>;
-}
+interface AuthClient {} // lazy
+interface DatabaseClient {} // lazy, AuthService
 
-type MyDeps = DependencyGroup<{
-  auth: Dependency<AuthService, MyDeps>;
-  infra: DependencyGroup<{
-    api: Dependency<ApiService, MyDeps>;
-    ports: DependencyGroup<{
-      db: Dependency<DbService, MyDeps>;
-    }>
-  }>
-}>
+type ServiceDeps = {
+  auth_service: AuthService;
+  employee_service: EmployeeService;
+  department_service: DepartmentService;
+};
 
-const tree = defineDependencyTree<MyDeps>({
-  auth: {
+type RepositoryDeps = {
+  employee_repository: EmployeeRepository;
+  department_repository: DepartmentRepository;
+};
+
+type ClientDeps = {
+  auth_client: AuthClient;
+  db_client: DatabaseClient;
+};
+
+type Deps = ServiceDeps & RepositoryDeps & ClientDeps;
+
+// ---------
+
+const serviceDepsDefinition = {
+  auth_service: {
     lazy: false,
-    needs: [],
-    factory: () => Promise.resolve({} as never)
+    needs: ['auth_client'],
+    needsLazy: [],
   },
-  infra: {
-    api: {
-      lazy: false,
-      needs: ['auth'],
-      factory: () => Promise.resolve({} as never)
-    },
-    ports: {
-      db: {
-        lazy: false,
-        needs: ['auth', 'infra.api'],
-        factory: () => Promise.resolve({} as never)
-      }
-    }
-  }
-})
+  employee_service: {
+    lazy: true,
+    needs: ['employee_repository'],
+    needsLazy: [],
+  },
+  department_service: {
+    lazy: true,
+    needs: ['department_repository', 'employee_repository'],
+    needsLazy: [],
+  },
+} satisfies Pick<DepsDefinition<Deps>, keyof ServiceDeps>;
 
+const repositoryDeps = {
+  employee_repository: {
+    lazy: true,
+    needs: ['db_client'],
+    needsLazy: [],
+  },
+  department_repository: {
+    lazy: true,
+    needs: ['db_client'],
+    needsLazy: [],
+  },
+} satisfies Pick<DepsDefinition<Deps>, keyof RepositoryDeps>;
 
+const clientDeps = {
+  auth_client: {
+    lazy: true,
+    needs: [],
+    needsLazy: [],
+  },
+  db_client: {
+    lazy: true,
+    needs: ['auth_service'],
+    needsLazy: [],
+  },
+} satisfies Pick<DepsDefinition<Deps>, keyof ClientDeps>;
+
+const depsDefinition = {
+  ...serviceDepsDefinition,
+  ...repositoryDeps,
+  ...clientDeps,
+} satisfies DepsDefinition<Deps>;
+
+// ---------
+
+const serviceDepsFactory = {
+  auth_service: () => Promise.resolve(''),
+  employee_service: () => Promise.resolve(''),
+  department_service: () => Promise.resolve(''),
+} satisfies Pick<DepsFactory<Deps, typeof depsDefinition>, keyof ServiceDeps>;
+
+const repositoryDepsFactory = {
+  employee_repository: () => Promise.resolve(''),
+  department_repository: () => Promise.resolve(''),
+} satisfies Pick<DepsFactory<Deps, typeof depsDefinition>, keyof RepositoryDeps>;
+
+const clientDepsFactory = {
+  auth_client: () => Promise.resolve(''),
+  db_client: () => Promise.resolve(''),
+} satisfies Pick<DepsFactory<Deps, typeof depsDefinition>, keyof ClientDeps>;
+
+const depsFactory = {
+  ...serviceDepsFactory,
+  ...repositoryDepsFactory,
+  ...clientDepsFactory,
+} satisfies DepsFactory<Deps, typeof depsDefinition>;
+
+// ---------
+
+const depsRuntime = createDepsRuntime<Deps>(depsDefinition, depsFactory);
