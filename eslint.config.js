@@ -5,24 +5,23 @@ import eslintPluginVitest from '@vitest/eslint-plugin';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default typescriptEslint.config(
-  { ignores: ['dist'] },
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+  eslintJs.configs.recommended,
+  typescriptEslint.configs.recommendedTypeChecked,
   {
-    extends: [eslintJs.configs.recommended, ...typescriptEslint.configs.recommendedTypeChecked],
-    files: ['**/*.{ts}'],
     languageOptions: {
       parserOptions: {
-        project: true,
+        projectService: {
+          allowDefaultProject: ['eslint.config.js'],
+        },
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         tsconfigRootDir: import.meta.dirname,
       },
     },
   },
-  {
-    files: ['**/*.test.{ts,tsx}'],
-    plugins: [eslintPluginVitest],
-    rules: {
-      ...eslintPluginVitest.configs.recommended.rules,
-    },
-  },
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
   eslintPluginUnicorn.configs['flat/recommended'],
+  eslintPluginVitest.configs.recommended,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   eslintPluginPrettierRecommended,
 );
