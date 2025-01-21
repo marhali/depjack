@@ -1,19 +1,53 @@
-import { Deps, DepsKey, DepsLazy } from '@depjack/core/definition/definition';
+import { Deps, DepsKey } from '@depjack/core/definition/definition';
 
-export type DepsRuntimeStateStatus = 'UNINITIALIZED' | 'INITIALIZING' | 'IDLE';
-
-export type DepsRuntimeState<T extends Deps> = {
-  status: DepsRuntimeStateStatus;
-  initialized: DepsKey<T>[];
-  initializing: DepsKey<T>[];
-};
-
+/** Represents a dependency runtime that is capable of resolving and caching dependencies. */
 export interface DepsRuntime<T extends Deps> {
-  getState: () => Readonly<DepsRuntimeState<T>>;
-  getDeps: <Keys extends DepsKey<T>[]>(...keys: Keys) => Promise<Pick<T, Keys[number]>>;
-  getDepsLazy: <Keys extends DepsKey<T>[]>(...keys: Keys) => Promise<DepsLazy<Pick<T, Keys[number]>>>;
-  getDepsSync: <Keys extends DepsKey<T>[]>(...keys: Keys) => Pick<T, Keys[number]>;
+  /**
+   * Returns the requested dependency by either resolving it or using a cached version.
+   * @param key Dependency identifier
+   */
+  getDep: <Key extends DepsKey<T>>(key: Key) => Promise<T[Key]>;
+
+  /**
+   * Returns the requested dependency synchronously from the cache.
+   * This will throw an exception if the desired dependency is not initialized.
+   * Make sure to check the initialization state before using this method.
+   * @see isDepInitialized
+   * @see getInitializedDeps
+   * @param key Dependency identifier
+   */
+  getDepSync: <Key extends DepsKey<T>>(key: Key) => T[Key];
+
+  /**
+   * Returns a list of dependencies that are currently initializing.
+   */
+  getInitializingDeps: () => DepsKey<T>[];
+
+  /**
+   * Returns a list of initialized dependencies.
+   * These deps are safe for use for synchronous access.
+   */
+  getInitializedDeps: () => DepsKey<T>[];
+
+  /**
+   * Checks whether a dependency is currently in the state of initializing.
+   * @param key Dependency identifier
+   */
+  isDepInitializing: (key: DepsKey<T>) => boolean;
+
+  /**
+   * Checks whether a dependency is already initialized.
+   * @param key Dependency identifier
+   */
   isDepInitialized: (key: DepsKey<T>) => boolean;
-  isInitialized: () => boolean;
-  initialize: () => Promise<void>;
+
+  /**
+   * Checks whether this runtime is initialized or not.
+   */
+  isRuntimeInitialized: () => boolean;
+
+  /**
+   * Initializes this runtime and resolves all non-lazy dependencies.
+   */
+  initializeRuntime: () => Promise<void>;
 }
