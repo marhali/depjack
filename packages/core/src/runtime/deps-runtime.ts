@@ -21,13 +21,13 @@ export interface DepsRuntime<T extends Deps> {
   /**
    * Returns a list of dependencies that are currently initializing.
    */
-  getInitializingDeps: () => DepsKey<T>[];
+  getInitializingDeps: () => Set<DepsKey<T>>;
 
   /**
    * Returns a list of initialized dependencies.
    * These deps are safe for use for synchronous access.
    */
-  getInitializedDeps: () => DepsKey<T>[];
+  getInitializedDeps: () => Set<DepsKey<T>>;
 
   /**
    * Checks whether a dependency is currently in the state of initializing.
