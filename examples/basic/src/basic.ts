@@ -85,19 +85,19 @@ const depsDefinition = {
 // ---------
 
 const serviceDepsFactory = {
-  auth_service: () => Promise.resolve(''),
-  employee_service: () => Promise.resolve(''),
-  department_service: () => Promise.resolve(''),
+  auth_service: () => Promise.resolve('auth_service_instance'),
+  employee_service: () => Promise.resolve('employee_service_instance'),
+  department_service: () => Promise.resolve('department_service_instance'),
 } satisfies Pick<DepsFactory<Deps, typeof depsDefinition>, keyof ServiceDeps>;
 
 const repositoryDepsFactory = {
-  employee_repository: () => Promise.resolve(''),
-  department_repository: () => Promise.resolve(''),
+  employee_repository: () => Promise.resolve('employee_repository_instance'),
+  department_repository: () => Promise.resolve('department_repository_instance'),
 } satisfies Pick<DepsFactory<Deps, typeof depsDefinition>, keyof RepositoryDeps>;
 
 const clientDepsFactory = {
-  auth_client: () => Promise.resolve(''),
-  db_client: () => Promise.resolve(''),
+  auth_client: () => Promise.resolve('auth_client_instance'),
+  db_client: () => Promise.resolve('db_client_instance'),
 } satisfies Pick<DepsFactory<Deps, typeof depsDefinition>, keyof ClientDeps>;
 
 const depsFactory = {
@@ -108,4 +108,11 @@ const depsFactory = {
 
 // ---------
 
-const depsRuntime = createDepsRuntime<Deps>(depsDefinition, depsFactory);
+async function main() {
+  const depsRuntime = createDepsRuntime<Deps>(depsDefinition, depsFactory);
+  await depsRuntime.initialize();
+  const authSrv = depsRuntime.getDepSync('auth_service');
+  console.log('resolvedAuthSrv', authSrv);
+}
+
+await main();
