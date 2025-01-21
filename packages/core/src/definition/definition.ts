@@ -8,6 +8,10 @@ export type DepsInstance<T extends Deps> = {
   [K in keyof T]?: T[K];
 };
 
+export type DepsLazyInstance<T extends Deps> = {
+  [K in keyof T]?: Promise<T[K]>;
+};
+
 export type DepsKey<T extends Deps> = keyof T;
 
 export type DepsDefinition<T extends Deps> = {
