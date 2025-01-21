@@ -44,10 +44,10 @@ export interface DepsRuntime<T extends Deps> {
   /**
    * Checks whether this runtime is initialized or not.
    */
-  isRuntimeInitialized: () => boolean;
+  isInitialized: () => boolean;
 
   /**
    * Initializes this runtime and resolves all non-lazy dependencies.
    */
-  initializeRuntime: () => Promise<void>;
+  initialize: () => Promise<void>;
 }
