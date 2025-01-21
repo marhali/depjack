@@ -113,6 +113,7 @@ async function main() {
   await depsRuntime.initialize();
   const authSrv = depsRuntime.getDepSync('auth_service');
   console.log('resolvedAuthSrv', authSrv);
+  console.log('state', depsRuntime.getState());
 }
 
 await main();
