@@ -110,10 +110,11 @@ const depsFactory = {
 
 async function main() {
   const depsRuntime = createDepsRuntime<Deps>(depsDefinition, depsFactory);
+  console.log('initializingDeps', depsRuntime.getInitializingDeps());
   await depsRuntime.initialize();
   const authSrv = depsRuntime.getDepSync('auth_service');
   console.log('resolvedAuthSrv', authSrv);
-  console.log('state', depsRuntime.getState());
+  console.log('initializedDeps', depsRuntime.getInitializedDeps());
 }
 
 await main();
