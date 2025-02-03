@@ -1,78 +1,79 @@
 import { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
-import {
-  Deps,
-  DepsDefinition,
-  DepsKey,
-  DepsInstance,
-  DepsLazyInstance,
-  DepsLazy,
-} from '@depjack/core/definition/definition';
+import { Deps, DepsDefinition, DepsKey, DepsLazy } from '@depjack/core/definition/definition';
 import { DepsGraph } from '@depjack/core/definition/graph.ts';
 import { DepsFactory } from '@depjack/core/factory.ts';
+import { DepsState } from '@depjack/core/runtime/deps-state.ts';
 import { Logger } from '@depjack/core/supportive/logger.ts';
 import determineInitDeps from '@depjack/core/runtime/determine-init-deps.ts';
 import determineDepsOrder from '@depjack/core/runtime/determine-deps-order.ts';
 import createDepsGraph from '@depjack/core/runtime/create-deps-graph.ts';
+import createReactiveState, { ReactiveState } from '@depjack/core/supportive/reactive-state.ts';
 
 class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
   private readonly depsGraph: DepsGraph<T>;
-  private readonly initializePromise: Promise<void>;
-
-  private initialized: boolean;
-  private depsInitializing: Set<DepsKey<T>>;
-  private depsInstance: DepsInstance<T>;
-  private depsLazyInstance: DepsLazyInstance<T>;
+  private readonly bootstrapPromise: Promise<void>;
+  private readonly state: ReactiveState<DepsState<T>>;
 
   constructor(
     private readonly depsDefinition: DepsDefinition<T>,
     private readonly depsFactory: DepsFactory<T, DepsDefinition<T>>,
     private readonly logger: Logger,
   ) {
-    this.initialized = false;
-    this.depsInitializing = new Set();
-    this.depsInstance = {};
-    this.depsLazyInstance = {};
+    this.state = createReactiveState({
+      bootstrapped: false,
+      initializing: new Set(),
+      instances: {},
+      resolvers: {},
+    });
     this.depsGraph = createDepsGraph(depsDefinition);
-    this.logger.debug('depsGraph', this.depsGraph);
+    this.logger.debug('Calculated dependencies graph', this.depsGraph);
 
     const initDeps = determineInitDeps(depsDefinition);
-    console.log('initDeps (lazy=false)', initDeps);
+    this.logger.debug('Init dependencies (lazy=false)', initDeps);
+
     const initDepsOrder = determineDepsOrder(initDeps, this.depsGraph);
-    this.logger.debug('initDepsOrder', initDepsOrder);
-    this.logger.debug('---');
-    this.initializePromise = new Promise((resolve, reject) => {
+    this.logger.debug('Initialization order', initDepsOrder);
+    this.bootstrapPromise = new Promise((resolve, reject) => {
       this.internalInitializeDeps(initDepsOrder)
         .then(() => {
-          this.initialized = true;
+          this.state.set('bootstrapped', true);
           resolve();
         })
         .catch(reject);
     });
   }
 
-  getDep = <Key extends DepsKey<T>>(key: Key): Promise<T[Key]> => {
+  resolve = <Key extends DepsKey<T>>(key: Key): Promise<T[Key]> => {
     return this.internalResolveDep(key);
   };
 
-  getDepSync = <Key extends DepsKey<T>>(key: Key): T[Key] => {
-    if (!this.depsInstance[key]) {
-      throw new Error(`Initialize dep "${String(key)}" before synchronous access.`);
+  resolveSync = <Key extends DepsKey<T>>(key: Key): T[Key] => {
+    const instance = this.state.get('instances')[key];
+
+    if (!instance) {
+      throw new Error(
+        `Illegal access on non-initialized dependency "${String(key)}". Make sure to initialize dependencies before any synchronous access.`,
+      );
     }
 
-    return this.depsInstance[key];
+    return instance;
   };
 
-  getInitializingDeps = () => this.depsInitializing;
+  getInitializing = () => this.state.get('initializing');
 
-  getInitializedDeps = () => new Set(Object.keys(this.depsInstance));
+  getInitialized = () => Object.keys(this.state.get('instances'));
 
-  isDepInitializing = (key: DepsKey<T>) => this.depsInitializing.has(key);
+  isInitializing = (key: DepsKey<T>) => this.state.get('initializing').includes(key);
 
-  isDepInitialized = (key: DepsKey<T>) => key in this.depsInstance;
+  isInitialized = (key: DepsKey<T>) => key in this.state.get('instances');
 
-  isInitialized = () => this.initialized;
+  isBootstrapped = () => this.state.get('bootstrapped');
 
-  initialize = () => this.initializePromise;
+  bootstrap = () => this.bootstrapPromise;
+
+  subscribe = <Scope extends keyof DepsState<T>>(scope: Scope, listener: (payload: DepsState<T>[Scope]) => void) => {
+    return this.state.subscribe(scope, listener);
+  };
 
   private internalInitializeDeps = async <Keys extends DepsKey<T>[]>(keys: Keys): Promise<Pick<T, Keys[number]>> => {
     const result = {} as Pick<T, Keys[number]>;
@@ -85,39 +86,50 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
   };
 
   private internalResolveDep = async <Key extends DepsKey<T>>(key: Key): Promise<T[Key]> => {
-    if (this.depsInstance[key]) {
-      this.logger.debug(`${String(key)} is already initialized`);
-      return this.depsInstance[key];
+    const instance = this.state.get('instances')[key];
+
+    if (instance) {
+      this.logger.debug(`Dependency "${String(key)}" is already initialized. Skip resolve.`);
+      return instance;
     }
 
-    if (this.depsLazyInstance[key]) {
-      this.logger.debug(`${String(key)} is already a promisified`);
-      return this.depsLazyInstance[key] as T[Key];
+    const instanceResolver = this.state.get('resolvers')[key];
+
+    if (instanceResolver) {
+      this.logger.debug(`Dependency "${String(key)}" already has a resolver. Skip resolve.`);
+      return instanceResolver as T[Key];
     }
 
     const initializeDepPromise = this.internalInitializeDep(key);
 
-    this.depsLazyInstance[key] = initializeDepPromise;
+    this.state.set('resolvers', {
+      ...this.state.get('resolvers'),
+      [key]: initializeDepPromise,
+    });
 
     return initializeDepPromise;
   };
 
   private internalInitializeDep = async <Key extends DepsKey<T>>(key: Key): Promise<T[Key]> => {
-    this.depsInitializing.add(key);
+    this.state.set('initializing', [...this.state.get('initializing'), key]);
 
     const neededKeys = this.depsDefinition[key].needs;
     const neededLazyKeys = this.depsDefinition[key].needsLazy;
     this.logger.debug(
-      `Initializing "${String(key)}" with needs on (${neededKeys.join(', ')}) and lazy needs on (${neededLazyKeys.join(', ')})...`,
+      `Initializing dependency "${String(key)}" with needs on (${neededKeys.join(', ')}) and lazy needs on (${neededLazyKeys.join(', ')})...`,
     );
     const neededInstances = {} as T;
 
     for (const neededKey of neededKeys) {
-      if (!this.depsInstance[neededKey]) {
-        throw new Error(`Missing needed instance "${String(neededKey)}" whilst initializing "${String(key)}".`);
+      const neededInstance = this.state.get('instances')[neededKey];
+
+      if (!neededInstance) {
+        throw new Error(
+          `Missing needed dependency instance "${String(neededKey)}" whilst initializing dependency "${String(key)}".`,
+        );
       }
 
-      neededInstances[neededKey] = this.depsInstance[neededKey];
+      neededInstances[neededKey] = neededInstance;
     }
 
     const neededLazyInstances = {} as DepsLazy<T>;
@@ -126,14 +138,22 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
       neededLazyInstances[neededLazyKey] = this.internalResolveDep(neededLazyKey);
     }
 
-    this.logger.debug(`Resolved needed instances for ${String(key)}:`, neededInstances);
+    this.logger.debug(`Resolved needed instances for dependency "${String(key)}"`, neededInstances);
+    this.logger.debug(`Resolved lazy needed instances for dependency "${String(key)}"`, neededLazyInstances);
 
     const instance = await this.depsFactory[key]({ ...neededInstances, ...neededLazyInstances });
 
-    this.logger.debug(`Factory of "${String(key)}" returned:`, instance);
+    this.logger.debug(`Dependency "${String(key)}" initialized`, instance);
 
-    this.depsInstance[key] = instance;
-    this.depsInitializing.delete(key);
+    this.state.set('instances', {
+      ...this.state.get('instances'),
+      [key]: instance,
+    });
+
+    this.state.set(
+      'initializing',
+      this.state.get('initializing').filter((currentKey) => currentKey !== key),
+    );
 
     return instance;
   };
