@@ -102,25 +102,23 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
     const result = {} as Pick<T, Keys[number]>;
 
     for (const key of keys) {
-      result[key] = await this.internalInitializeDep(key);
+      const resolver = this.internalInitializeDep(key);
+      this.state.set('resolvers', {
+        ...this.state.get('resolvers'),
+        [key]: resolver,
+      });
+      result[key] = await resolver;
     }
 
     return result;
   };
 
-  private internalResolveDep = async <Key extends DepsKey<T>>(key: Key): Promise<T[Key]> => {
-    const instance = this.state.get('instances')[key];
-
-    if (instance) {
-      this.logger.debug(`Dependency "${String(key)}" is already initialized. Skip resolve.`);
-      return instance;
-    }
-
+  private internalResolveDep = <Key extends DepsKey<T>>(key: Key): Promise<T[Key]> => {
     const instanceResolver = this.state.get('resolvers')[key];
 
     if (instanceResolver) {
       this.logger.debug(`Dependency "${String(key)}" already has a resolver. Skip resolve.`);
-      return instanceResolver as T[Key];
+      return instanceResolver;
     }
 
     const initializeDepPromise = this.internalInitializeDep(key);
