@@ -1,7 +1,13 @@
 export type Deps = Record<string, unknown>;
 
-export type DepsLazy<T> = {
+export type DepsLazy<T extends Deps> = {
   [K in keyof T]: Promise<T[K]>;
+};
+
+// TODO: evtl. umbenennen zu DepsLazy?
+//  -> sofern nur LazyFunction verwendet? Dann Ja
+export type DepsLazyFunction<T extends Deps> = {
+  [K in keyof T]: () => Promise<T[K]>;
 };
 
 export type DepsInstance<T extends Deps> = {

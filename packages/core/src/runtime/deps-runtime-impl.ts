@@ -155,10 +155,10 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
       neededInstances[neededKey] = neededInstance;
     }
 
-    const neededLazyInstances = {} as DepsLazy<T>;
+    const neededLazyInstances = {} as DepsLazyFunction<T>;
 
     for (const neededLazyKey of neededLazyKeys) {
-      neededLazyInstances[neededLazyKey] = this.internalResolveDep(neededLazyKey);
+      neededLazyInstances[neededLazyKey] = () => this.internalResolveDep(neededLazyKey);
     }
 
     this.logger.debug(`Resolved needed instances for dependency "${String(key)}"`, neededInstances);
