@@ -4,6 +4,9 @@ import { Deps, DepsKey, DepsInstance, DepsLazyInstance } from '@depjack/core/def
  * Represents the state of a deps runtime.
  */
 export type DepsState<T extends Deps> = {
+  /** Cached initialization promise to startup the runtime. */
+  bootstrapPromise: Promise<void> | undefined;
+
   /** Indicates whether this runtime has been initially initialized. */
   bootstrapped: boolean;
 

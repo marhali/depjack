@@ -11,7 +11,6 @@ import createReactiveState, { ReactiveState } from '@depjack/core/supportive/rea
 
 class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
   private readonly depsGraph: DepsGraph<T>;
-  private readonly bootstrapPromise: Promise<void>;
   private readonly state: ReactiveState<DepsState<T>>;
 
   constructor(
@@ -69,7 +68,31 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
 
   isBootstrapped = () => this.state.get('bootstrapped');
 
-  bootstrap = () => this.bootstrapPromise;
+  bootstrap = () => {
+    const existingBootstrapPromise = this.state.get('bootstrapPromise');
+
+    if (existingBootstrapPromise) {
+      return existingBootstrapPromise;
+    }
+
+    const initDeps = determineInitDeps(this.depsDefinition);
+    this.logger.debug('Init dependencies (lazy=false)', initDeps);
+
+    const initDepsOrder = determineDepsOrder(initDeps, this.depsGraph);
+    this.logger.debug('Initialization order', initDepsOrder);
+
+    const bootstrapPromise = new Promise<void>((resolve, reject) => {
+      this.internalInitializeDeps(initDepsOrder)
+        .then(() => {
+          this.state.set('bootstrapped', true);
+          resolve();
+        })
+        .catch(reject);
+    });
+
+    this.state.set('bootstrapPromise', bootstrapPromise);
+    return bootstrapPromise;
+  };
 
   subscribe = <Scope extends keyof DepsState<T>>(scope: Scope, listener: (payload: DepsState<T>[Scope]) => void) => {
     return this.state.subscribe(scope, listener);
