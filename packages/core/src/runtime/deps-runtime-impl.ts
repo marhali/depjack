@@ -1,5 +1,5 @@
 import { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
-import { Deps, DepsDefinition, DepsKey, DepsLazy } from '@depjack/core/definition/definition';
+import { Deps, DepsDefinition, DepsKey, DepsLazyFunction } from '@depjack/core/definition/definition';
 import { DepsGraph } from '@depjack/core/definition/graph.ts';
 import { DepsFactory } from '@depjack/core/factory.ts';
 import { DepsState } from '@depjack/core/runtime/deps-state.ts';
@@ -18,27 +18,15 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
     private readonly depsFactory: DepsFactory<T, DepsDefinition<T>>,
     private readonly logger: Logger,
   ) {
-    this.state = createReactiveState({
-      bootstrapped: false,
-      initializing: new Set(),
-      instances: {},
-      resolvers: {},
-    });
     this.depsGraph = createDepsGraph(depsDefinition);
     this.logger.debug('Calculated dependencies graph', this.depsGraph);
 
-    const initDeps = determineInitDeps(depsDefinition);
-    this.logger.debug('Init dependencies (lazy=false)', initDeps);
-
-    const initDepsOrder = determineDepsOrder(initDeps, this.depsGraph);
-    this.logger.debug('Initialization order', initDepsOrder);
-    this.bootstrapPromise = new Promise((resolve, reject) => {
-      this.internalInitializeDeps(initDepsOrder)
-        .then(() => {
-          this.state.set('bootstrapped', true);
-          resolve();
-        })
-        .catch(reject);
+    this.state = createReactiveState<DepsState<T>>({
+      bootstrapPromise: undefined,
+      bootstrapped: false,
+      initializing: [],
+      instances: {},
+      resolvers: {},
     });
   }
 
