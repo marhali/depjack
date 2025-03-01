@@ -2,22 +2,47 @@ import type { Deps, DepsDefinition, DepsLazyFunction } from '@depjack/core/defin
 
 /**
  * Defines the factory function for each dependency.
+ * @see Deps
+ * @see DepsDefintion
+ * @example ```ts
+ * type MyDeps = {
+ *   myModuleA: MyModuleA,
+ * };
+ *
+ * const myDepsDefinition = {
+ *   // ...
+ * } satisfies DepsDefinition<MyDeps>;
+ *
+ * const myDepsFactory = {
+ *   // ...
+ * } satisfies DepsFactory<MyDeps, typeof myDepsDefinition>;
+ * ```
  */
-export type DepsFactory<T extends Deps, D extends DepsDefinition<T>> = {
+export type DepsFactory<TDeps extends Deps, TDepsDefinition extends DepsDefinition<TDeps>> = {
   /**
    * Initialization function that is called to initialize this dependency.
    * This function is only called once per runtime environment.
    */
-  [K in keyof T]: (
-    needs: Pick<T, D[K]['needs'][number]> & DepsLazyFunction<Pick<T, D[K]['needsLazy'][number]>>,
-  ) => Promise<T[K]>;
+  [K in keyof TDeps]: (
+    needs: Pick<TDeps, TDepsDefinition[K]['needs'][number]> &
+      DepsLazyFunction<Pick<TDeps, TDepsDefinition[K]['needsLazy'][number]>>,
+  ) => Promise<TDeps[K]>;
 };
 
+/**
+ * Type helper to define only a partial part of the deps' factory.
+ * @see DepsFactory
+ * @example ```ts
+ * const myPartialDepsFactory = {
+ *   // ...
+ * } satisfies PartialDepsFactory<MyDeps, typeof myDepsDefinition, MyPartialDeps>;
+ * ```
+ */
 export type PartialDepsFactory<
-  DEPS extends Deps,
-  DEFINITION extends DepsDefinition<DEPS>,
-  PARTIAL extends Partial<DEPS>,
-> = Pick<DepsFactory<DEPS, DEFINITION>, Extract<keyof PARTIAL, keyof DEPS>>;
+  TDeps extends Deps,
+  TDepsDefinition extends DepsDefinition<TDeps>,
+  TPartialDeps extends Partial<TDeps>,
+> = Pick<DepsFactory<TDeps, TDepsDefinition>, Extract<keyof TPartialDeps, keyof TDeps>>;
 
 export type DepFactory<DEPS extends Deps, DEFINITION extends DepsDefinition<DEPS>, KEY extends keyof DEPS> = (
   needs: Pick<DEPS, DEFINITION[KEY]['needs'][number]> &
