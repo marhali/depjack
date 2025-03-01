@@ -32,9 +32,19 @@ export default typescriptEslint.config(
       },
     },
   },
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
   eslintPluginUnicorn.configs['flat/recommended'],
-  eslintPluginVitest.configs.recommended,
+  {
+    files: ['*.test.*'],
+    plugins: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      vitest: eslintPluginVitest,
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    rules: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      ...eslintPluginVitest.configs.recommended.rules,
+    },
+  },
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   eslintPluginPrettierRecommended,
 );
