@@ -1,0 +1,45 @@
+{
+  "name": "@depjack/examples-react",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Depjack example utilizing usage in a React web application",
+  "author": "Marcel Haßlimger <contact@marhali.de>",
+  "license": "MIT",
+  "funding": "https://github.com/marhali/depjack#donation",
+  "homepage": "https://github.com/marhali/depjack",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marhali/depjack.git",
+    "directory": "examples/react"
+  },
+  "bugs": {
+    "url": "https://github.com/marhali/depjack/issues"
+  },
+  "keywords": [
+    "enterprise",
+    "typed",
+    "dependency",
+    "injecton",
+    "example",
+    "react"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@depjack/core": "workspace:*",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.10",
+    "@types/react-dom": "19.0.4",
+    "@vitejs/plugin-react-swc": "3.8.0",
+    "vite": "6.2.0",
+    "vite-tsconfig-paths": "5.1.4"
+  }
+}
