@@ -1,17 +1,33 @@
+/**
+ * Record of all dependencies by their identifier as key and type as value.
+ */
 export type Deps = Record<string, unknown>;
 
+/**
+ * Maps the provided dependencies as lazily loaded using an async function.
+ * @see Deps
+ */
 export type DepsLazyFunction<T extends Deps> = {
   [K in keyof T]: () => Promise<T[K]>;
 };
 
+/**
+ * Record of dependencies instances. Allows empty keys.
+ */
 export type DepsInstance<T extends Deps> = {
   [K in keyof T]?: T[K];
 };
 
+/**
+ * Record of lazily loaded instances. Allows empty keys.
+ */
 export type DepsLazyInstance<T extends Deps> = {
   [K in keyof T]?: Promise<T[K]>;
 };
 
+/**
+ * Represents any dependency key identifier.
+ */
 export type DepsKey<T extends Deps> = keyof T;
 
 export type DepsDefinition<T extends Deps> = {
