@@ -1,5 +1,11 @@
 /**
  * Record of all dependencies by their identifier as key and type as value.
+ * @example ```ts
+ * type MyDeps = {
+ *   myModuleA: MyModuleA,
+ *   myModuleB: MyModuleB,
+ * };
+ * ```
  */
 export type Deps = Record<string, unknown>;
 
@@ -27,9 +33,33 @@ export type DepsLazyInstance<TDeps extends Deps> = {
 
 /**
  * Represents any dependency key identifier.
+ * @example ```ts
+ * type MyDeps = {
+ *   myModuleA: MyModuleA,
+ * };
+ *
+ * const anyKey: DepsKey<MyDeps> = 'myModuleA';
+ * ```
  */
 export type DepsKey<TDeps extends Deps> = keyof TDeps;
 
+/**
+ * Record of dependency definitions. Used to configure the injection behaviour of each dependency.
+ * @see Deps
+ * @example ```ts
+ * type MyDeps = {
+ *   myModuleA: MyModuleA,
+ * };
+ *
+ * const myDepsDefinition = {
+ *   myModuleA: {
+ *     lazy: true,
+ *     needs: [],
+ *     needsLazy: [],
+ *   },
+ * } satisfies DepsDefinition<MyDeps>;
+ * ```
+ */
 export type DepsDefinition<TDeps extends Deps> = {
   [K in keyof TDeps]: {
     /**
