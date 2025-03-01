@@ -1,18 +1,36 @@
+// See https://www.totaltypescript.com/tsconfig-cheat-sheet
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["esnext"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "allowImportingTsExtensions": true,
+    /* Base Options */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    /* Build & Transpile */
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": true,
+    "lib": ["ES2022"],
+    "baseUrl": ".",
+
+    /* Path Aliases */
     "paths": {
       "@depjack/core/*": ["./packages/core/src/*"],
-      "@depjack/react/*": ["./packages/react/src/*"]
-    },
-    "strict": true,
-    "declaration": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+      "@depjack/react/*": ["./packages/react/src/*"],
+      "~/examples/standalone/*": ["./examples/standalone/src/*"],
+      "~/examples/react/*": ["./examples/react/src/*"]
+    }
   }
 }
