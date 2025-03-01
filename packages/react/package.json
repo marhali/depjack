@@ -22,15 +22,14 @@
     "react"
   ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "test": "vitest"
   },
   "peerDependencies": {
     "@depjack/core": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.5.3",
-    "vite": "^5.4.1"
+    "vite": "6.2.0",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "3.0.7"
   }
 }
