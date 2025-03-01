@@ -1,5 +1,6 @@
 import eslintJs from '@eslint/js';
 import typescriptEslint from 'typescript-eslint';
+import eslintPluginImport from 'eslint-plugin-import';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 import eslintPluginVitest from '@vitest/eslint-plugin';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
@@ -7,6 +8,18 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 export default typescriptEslint.config(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
   eslintJs.configs.recommended,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+  eslintPluginImport.flatConfigs.recommended,
+  {
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: 'tsconfig*(.*).json',
+        },
+        node: true,
+      },
+    },
+  },
   typescriptEslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
