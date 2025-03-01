@@ -1,6 +1,6 @@
-import { DepsDefinition } from '@depjack/core/definition/definition';
-import { DepsFactory } from '@depjack/core/factory';
-import createDepsRuntime from '@depjack/core/runtime/create-deps-runtime.ts';
+import type {DepsDefinition} from "@depjack/core/src/definition";
+import type {DepsFactory} from "@depjack/core/src/factory";
+import createDepsRuntime from "@depjack/core/src/runtime/create-deps-runtime.js";
 
 interface AuthService {} // -> !lazy, authClient
 interface EmployeeService {} // lazy, EmployeeRepository
