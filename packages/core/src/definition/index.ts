@@ -44,6 +44,11 @@ export type DepsLazyInstance<TDeps extends Deps> = {
 export type DepsKey<TDeps extends Deps> = keyof TDeps;
 
 /**
+ * Record of dependencies and a set of their required direct and transitive dependencies.
+ */
+export type DepsGraph<TDeps extends Deps> = Record<keyof TDeps, Set<keyof TDeps>>;
+
+/**
  * Record of dependency definitions. Used to configure the injection behaviour of each dependency.
  * @see Deps
  * @example ```ts
