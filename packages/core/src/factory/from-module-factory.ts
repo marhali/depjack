@@ -17,8 +17,10 @@
  * ```
  * @param moduleLoader Callback function that resolves to the target module
  */
-function fromModuleFactory<Needs, Result>(moduleLoader: () => Promise<{ factory: (needs: Needs) => Promise<Result> }>) {
-  return async (needs: Needs) => {
+function fromModuleFactory<TNeeds, TResult>(
+  moduleLoader: () => Promise<{ factory: (needs: TNeeds) => Promise<TResult> }>,
+) {
+  return async (needs: TNeeds) => {
     const module = await moduleLoader();
     return module.factory(needs);
   };
