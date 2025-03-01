@@ -82,7 +82,16 @@ export type DepsDefinition<TDeps extends Deps> = {
   };
 };
 
-export type PartialDepsDefinition<DEPS extends Deps, PARTIAL extends Partial<DEPS>> = Pick<
-  DepsDefinition<DEPS>,
-  Extract<keyof PARTIAL, keyof DEPS>
+/**
+ * Type helper to define only a partial part of the deps' definition.
+ * @see DepsDefinition
+ * @example ```ts
+ * const myPartialDepsDefinition = {
+ *   // ...
+ * } satisfies PartialDepsDefinition<MyDeps, MyPartialDeps>;
+ * ```
+ */
+export type PartialDepsDefinition<TDeps extends Deps, TPartialDeps extends Partial<TDeps>> = Pick<
+  DepsDefinition<TDeps>,
+  Extract<keyof TPartialDeps, keyof TDeps>
 >;
