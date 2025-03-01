@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import createReactiveState, { ReactiveState } from '@depjack/core/supportive/reactive-state.ts';
+import createReactiveState, { type ReactiveState } from '@depjack/core/supportive/reactive-state';
 
 describe('reactive-state', () => {
   describe('createReactiveState()', () => {

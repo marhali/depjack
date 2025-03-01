@@ -1,4 +1,4 @@
-import { DepsKey } from '@depjack/core/definition/definition.ts';
+import type { DepsKey } from '@depjack/core/definition';
 import { vi } from 'vitest';
 
 export const mockedDetermineDepsOrder: DepsKey<Record<string, unknown>>[] = [];

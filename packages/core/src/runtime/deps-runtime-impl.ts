@@ -1,27 +1,26 @@
-import { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
-import { Deps, DepsDefinition, DepsKey, DepsLazyFunction } from '@depjack/core/definition/definition';
-import { DepsGraph } from '@depjack/core/definition/graph.ts';
-import { DepsFactory } from '@depjack/core/factory.ts';
-import { DepsState } from '@depjack/core/runtime/deps-state.ts';
-import { Logger } from '@depjack/core/supportive/logger.ts';
-import determineInitDeps from '@depjack/core/runtime/determine-init-deps.ts';
-import determineDepsOrder from '@depjack/core/runtime/determine-deps-order.ts';
-import createDepsGraph from '@depjack/core/runtime/create-deps-graph.ts';
-import createReactiveState, { ReactiveState } from '@depjack/core/supportive/reactive-state.ts';
+import type { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
+import type { Deps, DepsDefinition, DepsKey, DepsGraph, DepsLazyFunction } from '@depjack/core/definition';
+import type { DepsFactory } from '@depjack/core/factory';
+import type { DepsState } from '@depjack/core/runtime/deps-state';
+import type { Logger } from '@depjack/core/supportive/logger';
+import determineInitDeps from '@depjack/core/runtime/determine-init-deps';
+import determineDepsOrder from '@depjack/core/runtime/determine-deps-order';
+import createDepsGraph from '@depjack/core/runtime/create-deps-graph';
+import createReactiveState, { type ReactiveState } from '@depjack/core/supportive/reactive-state';
 
-class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
-  private readonly depsGraph: DepsGraph<T>;
-  private readonly state: ReactiveState<DepsState<T>>;
+class DepsRuntimeImpl<TDeps extends Deps> implements DepsRuntime<TDeps> {
+  private readonly depsGraph: DepsGraph<TDeps>;
+  private readonly state: ReactiveState<DepsState<TDeps>>;
 
   constructor(
-    private readonly depsDefinition: DepsDefinition<T>,
-    private readonly depsFactory: DepsFactory<T, DepsDefinition<T>>,
+    private readonly depsDefinition: DepsDefinition<TDeps>,
+    private readonly depsFactory: DepsFactory<TDeps, DepsDefinition<TDeps>>,
     private readonly logger: Logger,
   ) {
     this.depsGraph = createDepsGraph(depsDefinition);
     this.logger.debug('Calculated dependencies graph', this.depsGraph);
 
-    this.state = createReactiveState<DepsState<T>>({
+    this.state = createReactiveState<DepsState<TDeps>>({
       bootstrapPromise: undefined,
       bootstrapped: false,
       initializing: [],
@@ -30,11 +29,11 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
     });
   }
 
-  resolve = <Key extends DepsKey<T>>(key: Key): Promise<T[Key]> => {
+  resolve = <TKey extends DepsKey<TDeps>>(key: TKey): Promise<TDeps[TKey]> => {
     return this.internalResolveDep(key);
   };
 
-  resolveSync = <Key extends DepsKey<T>>(key: Key): T[Key] => {
+  resolveSync = <TKey extends DepsKey<TDeps>>(key: TKey): TDeps[TKey] => {
     const instance = this.state.get('instances')[key];
 
     if (!instance) {
@@ -50,9 +49,9 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
 
   getInitialized = () => Object.keys(this.state.get('instances'));
 
-  isInitializing = (key: DepsKey<T>) => this.state.get('initializing').includes(key);
+  isInitializing = (key: DepsKey<TDeps>) => this.state.get('initializing').includes(key);
 
-  isInitialized = (key: DepsKey<T>) => key in this.state.get('instances');
+  isInitialized = (key: DepsKey<TDeps>) => key in this.state.get('instances');
 
   isBootstrapped = () => this.state.get('bootstrapped');
 
@@ -82,12 +81,17 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
     return bootstrapPromise;
   };
 
-  subscribe = <Scope extends keyof DepsState<T>>(scope: Scope, listener: (payload: DepsState<T>[Scope]) => void) => {
+  subscribe = <TScope extends keyof DepsState<TDeps>>(
+    scope: TScope,
+    listener: (payload: DepsState<TDeps>[TScope]) => void,
+  ) => {
     return this.state.subscribe(scope, listener);
   };
 
-  private internalInitializeDeps = async <Keys extends DepsKey<T>[]>(keys: Keys): Promise<Pick<T, Keys[number]>> => {
-    const result = {} as Pick<T, Keys[number]>;
+  private internalInitializeDeps = async <TKeys extends DepsKey<TDeps>[]>(
+    keys: TKeys,
+  ): Promise<Pick<TDeps, TKeys[number]>> => {
+    const result = {} as Pick<TDeps, TKeys[number]>;
 
     for (const key of keys) {
       const resolver = this.internalInitializeDep(key);
@@ -101,7 +105,7 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
     return result;
   };
 
-  private internalResolveDep = <Key extends DepsKey<T>>(key: Key): Promise<T[Key]> => {
+  private internalResolveDep = <TKey extends DepsKey<TDeps>>(key: TKey): Promise<TDeps[TKey]> => {
     const instanceResolver = this.state.get('resolvers')[key];
 
     if (instanceResolver) {
@@ -119,7 +123,7 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
     return initializeDepPromise;
   };
 
-  private internalInitializeDep = async <Key extends DepsKey<T>>(key: Key): Promise<T[Key]> => {
+  private internalInitializeDep = async <TKey extends DepsKey<TDeps>>(key: TKey): Promise<TDeps[TKey]> => {
     this.state.set('initializing', [...this.state.get('initializing'), key]);
 
     const neededKeys = this.depsDefinition[key].needs;
@@ -127,7 +131,7 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
     this.logger.debug(
       `Initializing dependency "${String(key)}" with needs on (${neededKeys.join(', ')}) and lazy needs on (${neededLazyKeys.join(', ')})...`,
     );
-    const neededInstances = {} as T;
+    const neededInstances = {} as TDeps;
 
     for (const neededKey of neededKeys) {
       const neededInstance = this.state.get('instances')[neededKey];
@@ -141,7 +145,7 @@ class DepsRuntimeImpl<T extends Deps> implements DepsRuntime<T> {
       neededInstances[neededKey] = neededInstance;
     }
 
-    const neededLazyInstances = {} as DepsLazyFunction<T>;
+    const neededLazyInstances = {} as DepsLazyFunction<TDeps>;
 
     for (const neededLazyKey of neededLazyKeys) {
       neededLazyInstances[neededLazyKey] = () => this.internalResolveDep(neededLazyKey);

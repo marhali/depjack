@@ -1,17 +1,19 @@
-import { Deps, DepsKey } from '@depjack/core/definition/definition.ts';
-import { DepsGraph } from '@depjack/core/definition/graph.ts';
+import type { Deps, DepsKey, DepsGraph } from '@depjack/core/definition';
 
 /**
  * Determines the initialization order of the provided deps utilizing the dependencies graph.
  * @param deps Dependencies that are requested for initialization
  * @param depsGraph Dependencies Graph
  */
-function determineDepsOrder<T extends Deps>(deps: Set<DepsKey<T>>, depsGraph: DepsGraph<T>): DepsKey<T>[] {
-  const result = [] as DepsKey<T>[];
-  const marker = new Set<DepsKey<T>>();
-  const temporaryMarker = new Set<DepsKey<T>>();
+function determineDepsOrder<TDeps extends Deps>(
+  deps: Set<DepsKey<TDeps>>,
+  depsGraph: DepsGraph<TDeps>,
+): DepsKey<TDeps>[] {
+  const result = [] as DepsKey<TDeps>[];
+  const marker = new Set<DepsKey<TDeps>>();
+  const temporaryMarker = new Set<DepsKey<TDeps>>();
 
-  const visit = (key: DepsKey<T>) => {
+  const visit = (key: DepsKey<TDeps>) => {
     if (temporaryMarker.has(key)) {
       throw new Error(`Detected circular dependency on "${String(key)}".`);
     }

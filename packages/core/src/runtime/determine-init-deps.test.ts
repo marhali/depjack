@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import determineInitDeps from '@depjack/core/runtime/determine-init-deps.ts';
+import determineInitDeps from '@depjack/core/runtime/determine-init-deps';
 
 describe('determineInitDeps()', () => {
   it('should return all deps with lazy=false', () => {

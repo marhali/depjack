@@ -1,17 +1,16 @@
-import { Deps, DepsDefinition, DepsKey } from '@depjack/core/definition/definition';
-import { DepsGraph } from '@depjack/core/definition/graph';
-import traverseDepGraph from '@depjack/core/runtime/traverse-dep-graph.ts';
+import type { Deps, DepsDefinition, DepsKey, DepsGraph } from '@depjack/core/definition';
+import traverseDepGraph from '@depjack/core/runtime/traverse-dep-graph';
 
 /**
  * Creates the dependency graph for the provided dependencies' definition.
  * @param depsDefinition Dependencies definition
  * @see traverseDepGraph
  */
-function createDepsGraph<T extends Deps>(depsDefinition: DepsDefinition<T>): DepsGraph<T> {
-  const result = {} as DepsGraph<T>;
+function createDepsGraph<TDeps extends Deps>(depsDefinition: DepsDefinition<TDeps>): DepsGraph<TDeps> {
+  const result = {} as DepsGraph<TDeps>;
 
   for (const key of Object.keys(depsDefinition)) {
-    result[key as DepsKey<T>] = traverseDepGraph(key, depsDefinition);
+    result[key as DepsKey<TDeps>] = traverseDepGraph(key, depsDefinition);
   }
 
   return result;

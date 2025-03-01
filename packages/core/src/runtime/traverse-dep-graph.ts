@@ -1,4 +1,4 @@
-import { Deps, DepsDefinition, DepsKey } from '@depjack/core/definition/definition';
+import type { Deps, DepsDefinition, DepsKey } from '@depjack/core/definition';
 
 /**
  * Travers the entire dependency graph and returns the direct and transitive
@@ -6,11 +6,14 @@ import { Deps, DepsDefinition, DepsKey } from '@depjack/core/definition/definiti
  * @param dep Dependency key
  * @param depsDefinition Dependencies definition
  */
-function traverseDepGraph<T extends Deps>(dep: DepsKey<T>, depsDefinition: DepsDefinition<T>): Set<DepsKey<T>> {
-  const result = new Set<DepsKey<T>>();
-  const marker = new Set<DepsKey<T>>();
+function traverseDepGraph<TDeps extends Deps>(
+  dep: DepsKey<TDeps>,
+  depsDefinition: DepsDefinition<TDeps>,
+): Set<DepsKey<TDeps>> {
+  const result = new Set<DepsKey<TDeps>>();
+  const marker = new Set<DepsKey<TDeps>>();
 
-  const visit = (key: DepsKey<T>) => {
+  const visit = (key: DepsKey<TDeps>) => {
     if (marker.has(key)) {
       throw new Error(`Detected circular dependency on "${String(key)}".`);
     }

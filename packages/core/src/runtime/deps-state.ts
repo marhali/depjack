@@ -1,9 +1,9 @@
-import { Deps, DepsKey, DepsInstance, DepsLazyInstance } from '@depjack/core/definition/definition.ts';
+import type { Deps, DepsKey, DepsInstance, DepsLazyInstance } from '@depjack/core/definition';
 
 /**
  * Represents the state of a deps runtime.
  */
-export type DepsState<T extends Deps> = {
+export type DepsState<TDeps extends Deps> = {
   /** Cached initialization promise to startup the runtime. */
   bootstrapPromise: Promise<void> | undefined;
 
@@ -11,11 +11,11 @@ export type DepsState<T extends Deps> = {
   bootstrapped: boolean;
 
   /** Already initialized dependencies. */
-  instances: DepsInstance<T>;
+  instances: DepsInstance<TDeps>;
 
   /** Cached dependency instance promises. */
-  resolvers: DepsLazyInstance<T>;
+  resolvers: DepsLazyInstance<TDeps>;
 
   /** Dependencies that are currently initializing. */
-  initializing: DepsKey<T>[];
+  initializing: DepsKey<TDeps>[];
 };

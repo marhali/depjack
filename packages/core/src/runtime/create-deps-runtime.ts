@@ -1,8 +1,8 @@
-import { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
-import { Deps, DepsDefinition } from '@depjack/core/definition/definition';
-import { DepsFactory } from '@depjack/core/factory';
-import { Logger } from '@depjack/core/supportive/logger.ts';
-import DepsRuntimeImpl from '@depjack/core/runtime/deps-runtime-impl.ts';
+import type { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
+import type { Deps, DepsDefinition } from '@depjack/core/definition';
+import type { DepsFactory } from '@depjack/core/factory';
+import type { Logger } from '@depjack/core/supportive/logger';
+import DepsRuntimeImpl from '@depjack/core/runtime/deps-runtime-impl';
 
 type DepsRuntimeOptions = {
   /** Logger to use for the runtime. */
@@ -19,11 +19,11 @@ const defaultRuntimeOptions: DepsRuntimeOptions = {
  * @param depsFactory Dependencies factory
  * @param options Optional configuration for the runtime
  */
-function createDepsRuntime<T extends Deps>(
-  depsDefinition: DepsDefinition<T>,
-  depsFactory: DepsFactory<T, DepsDefinition<T>>,
+function createDepsRuntime<TDeps extends Deps>(
+  depsDefinition: DepsDefinition<TDeps>,
+  depsFactory: DepsFactory<TDeps, DepsDefinition<TDeps>>,
   options: DepsRuntimeOptions = defaultRuntimeOptions,
-): DepsRuntime<T> {
+): DepsRuntime<TDeps> {
   return new DepsRuntimeImpl(depsDefinition, depsFactory, options.logger);
 }
 

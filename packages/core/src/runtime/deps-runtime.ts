@@ -1,13 +1,13 @@
-import { Deps, DepsKey } from '@depjack/core/definition/definition';
-import { DepsState } from '@depjack/core/runtime/deps-state.ts';
+import type { Deps, DepsKey } from '@depjack/core/definition';
+import type { DepsState } from '@depjack/core/runtime/deps-state';
 
 /** Represents a dependency runtime that is capable of resolving and caching dependencies. */
-export interface DepsRuntime<T extends Deps> {
+export interface DepsRuntime<TDeps extends Deps> {
   /**
    * Returns the requested dependency by either resolving it or using a cached version.
    * @param key Dependency identifier
    */
-  resolve: <Key extends DepsKey<T>>(key: Key) => Promise<T[Key]>;
+  resolve: <TKey extends DepsKey<TDeps>>(key: TKey) => Promise<TDeps[TKey]>;
 
   /**
    * Returns the requested dependency synchronously from the cache.
@@ -17,30 +17,30 @@ export interface DepsRuntime<T extends Deps> {
    * @see getInitializedDeps
    * @param key Dependency identifier
    */
-  resolveSync: <Key extends DepsKey<T>>(key: Key) => T[Key];
+  resolveSync: <TKey extends DepsKey<TDeps>>(key: TKey) => TDeps[TKey];
 
   /**
    * Returns a list of dependencies that are currently initializing.
    */
-  getInitializing: () => Readonly<DepsKey<T>[]>;
+  getInitializing: () => Readonly<DepsKey<TDeps>[]>;
 
   /**
    * Returns a list of initialized dependencies.
    * These deps are safe for use for synchronous access.
    */
-  getInitialized: () => Readonly<DepsKey<T>[]>;
+  getInitialized: () => Readonly<DepsKey<TDeps>[]>;
 
   /**
    * Checks whether a dependency is currently in the state of initializing.
    * @param key Dependency identifier
    */
-  isInitializing: (key: DepsKey<T>) => boolean;
+  isInitializing: (key: DepsKey<TDeps>) => boolean;
 
   /**
    * Checks whether a dependency is already initialized.
    * @param key Dependency identifier
    */
-  isInitialized: (key: DepsKey<T>) => boolean;
+  isInitialized: (key: DepsKey<TDeps>) => boolean;
 
   /**
    * Checks whether this runtime is initialized or not.
@@ -56,8 +56,8 @@ export interface DepsRuntime<T extends Deps> {
    * Registers the provided listener. The listener is called when changes occur in the specified scope.
    * Returns a teardown function that will unregister this listener if called.
    */
-  subscribe: <Scope extends keyof DepsState<T>>(
-    scope: Scope,
-    listener: (payload: DepsState<T>[Scope]) => void,
+  subscribe: <TScope extends keyof DepsState<TDeps>>(
+    scope: TScope,
+    listener: (payload: DepsState<TDeps>[TScope]) => void,
   ) => () => void;
 }

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import determineDepsOrder from '@depjack/core/runtime/determine-deps-order.ts';
+import determineDepsOrder from '@depjack/core/runtime/determine-deps-order';
 
 describe('determineDepsOrder()', () => {
   describe('with zero deps', () => {
