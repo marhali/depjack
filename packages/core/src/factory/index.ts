@@ -23,10 +23,10 @@ export type DepsFactory<TDeps extends Deps, TDepsDefinition extends DepsDefiniti
    * Initialization function that is called to initialize this dependency.
    * This function is only called once per runtime environment.
    */
-  [K in keyof TDeps]: (
-    needs: Pick<TDeps, TDepsDefinition[K]['needs'][number]> &
-      DepsLazyFunction<Pick<TDeps, TDepsDefinition[K]['needsLazy'][number]>>,
-  ) => Promise<TDeps[K]>;
+  [TDepsKey in keyof TDeps]: (
+    needs: Pick<TDeps, TDepsDefinition[TDepsKey]['needs'][number]> &
+      DepsLazyFunction<Pick<TDeps, TDepsDefinition[TDepsKey]['needsLazy'][number]>>,
+  ) => Promise<TDeps[TDepsKey]>;
 };
 
 /**
@@ -44,7 +44,24 @@ export type PartialDepsFactory<
   TPartialDeps extends Partial<TDeps>,
 > = Pick<DepsFactory<TDeps, TDepsDefinition>, Extract<keyof TPartialDeps, keyof TDeps>>;
 
-export type DepFactory<DEPS extends Deps, DEFINITION extends DepsDefinition<DEPS>, KEY extends keyof DEPS> = (
-  needs: Pick<DEPS, DEFINITION[KEY]['needs'][number]> &
-    DepsLazyFunction<Pick<DEPS, DEFINITION[KEY]['needsLazy'][number]>>,
-) => Promise<DEPS[KEY]>;
+/**
+ * Type helper to define a single dependency factory.
+ * @see DepsDefinition
+ * @example ```ts
+ * export class MyModule {
+ *  // ...
+ * }
+ *
+ * export const factory: DepFactory<MyDeps, typeof myDepsDefinition, 'myModule'> = (needs) => {
+ *   return Promise.resolve(new MyModule(needs['myRequiredService']));
+ * };
+ * ```
+ */
+export type DepFactory<
+  TDeps extends Deps,
+  TDepsDefinition extends DepsDefinition<TDeps>,
+  TDepsKey extends keyof TDeps,
+> = (
+  needs: Pick<TDeps, TDepsDefinition[TDepsKey]['needs'][number]> &
+    DepsLazyFunction<Pick<TDeps, TDepsDefinition[TDepsKey]['needsLazy'][number]>>,
+) => Promise<TDeps[TDepsKey]>;

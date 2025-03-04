@@ -14,21 +14,21 @@ export type Deps = Record<string, unknown>;
  * @see Deps
  */
 export type DepsLazyFunction<TDeps extends Deps> = {
-  [K in keyof TDeps]: () => Promise<TDeps[K]>;
+  [TDepsKey in keyof TDeps]: () => Promise<TDeps[TDepsKey]>;
 };
 
 /**
  * Record of dependencies instances. Allows empty keys.
  */
 export type DepsInstance<TDeps extends Deps> = {
-  [K in keyof TDeps]?: TDeps[K];
+  [TDepsKey in keyof TDeps]?: TDeps[TDepsKey];
 };
 
 /**
  * Record of lazily loaded instances. Allows empty keys.
  */
 export type DepsLazyInstance<TDeps extends Deps> = {
-  [K in keyof TDeps]?: Promise<TDeps[K]>;
+  [TDepsKey in keyof TDeps]?: Promise<TDeps[TDepsKey]>;
 };
 
 /**
@@ -66,7 +66,7 @@ export type DepsGraph<TDeps extends Deps> = Record<keyof TDeps, Set<keyof TDeps>
  * ```
  */
 export type DepsDefinition<TDeps extends Deps> = {
-  [K in keyof TDeps]: {
+  [TDepsKey in keyof TDeps]: {
     /**
      * Defines whether this dependency should be initialized on-demand (true) or
      * with the initialization of the runtime environment (false).

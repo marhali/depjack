@@ -29,11 +29,11 @@ class DepsRuntimeImpl<TDeps extends Deps> implements DepsRuntime<TDeps> {
     });
   }
 
-  resolve = <TKey extends DepsKey<TDeps>>(key: TKey): Promise<TDeps[TKey]> => {
+  resolve = <TDepsKey extends DepsKey<TDeps>>(key: TDepsKey): Promise<TDeps[TDepsKey]> => {
     return this.internalResolveDep(key);
   };
 
-  resolveSync = <TKey extends DepsKey<TDeps>>(key: TKey): TDeps[TKey] => {
+  resolveSync = <TDepsKey extends DepsKey<TDeps>>(key: TDepsKey): TDeps[TDepsKey] => {
     const instance = this.state.get('instances')[key];
 
     if (!instance) {
@@ -88,10 +88,10 @@ class DepsRuntimeImpl<TDeps extends Deps> implements DepsRuntime<TDeps> {
     return this.state.subscribe(scope, listener);
   };
 
-  private internalInitializeDeps = async <TKeys extends DepsKey<TDeps>[]>(
-    keys: TKeys,
-  ): Promise<Pick<TDeps, TKeys[number]>> => {
-    const result = {} as Pick<TDeps, TKeys[number]>;
+  private internalInitializeDeps = async <TDepsKeys extends DepsKey<TDeps>[]>(
+    keys: TDepsKeys,
+  ): Promise<Pick<TDeps, TDepsKeys[number]>> => {
+    const result = {} as Pick<TDeps, TDepsKeys[number]>;
 
     for (const key of keys) {
       const resolver = this.internalInitializeDep(key);
@@ -105,7 +105,7 @@ class DepsRuntimeImpl<TDeps extends Deps> implements DepsRuntime<TDeps> {
     return result;
   };
 
-  private internalResolveDep = <TKey extends DepsKey<TDeps>>(key: TKey): Promise<TDeps[TKey]> => {
+  private internalResolveDep = <TDepsKey extends DepsKey<TDeps>>(key: TDepsKey): Promise<TDeps[TDepsKey]> => {
     const instanceResolver = this.state.get('resolvers')[key];
 
     if (instanceResolver) {
@@ -123,7 +123,7 @@ class DepsRuntimeImpl<TDeps extends Deps> implements DepsRuntime<TDeps> {
     return initializeDepPromise;
   };
 
-  private internalInitializeDep = async <TKey extends DepsKey<TDeps>>(key: TKey): Promise<TDeps[TKey]> => {
+  private internalInitializeDep = async <TDepsKey extends DepsKey<TDeps>>(key: TDepsKey): Promise<TDeps[TDepsKey]> => {
     this.state.set('initializing', [...this.state.get('initializing'), key]);
 
     const neededKeys = this.depsDefinition[key].needs;

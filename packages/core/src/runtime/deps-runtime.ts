@@ -7,7 +7,7 @@ export interface DepsRuntime<TDeps extends Deps> {
    * Returns the requested dependency by either resolving it or using a cached version.
    * @param key Dependency identifier
    */
-  resolve: <TKey extends DepsKey<TDeps>>(key: TKey) => Promise<TDeps[TKey]>;
+  resolve: <TDepsKey extends DepsKey<TDeps>>(key: TDepsKey) => Promise<TDeps[TDepsKey]>;
 
   /**
    * Returns the requested dependency synchronously from the cache.
@@ -17,7 +17,7 @@ export interface DepsRuntime<TDeps extends Deps> {
    * @see getInitializedDeps
    * @param key Dependency identifier
    */
-  resolveSync: <TKey extends DepsKey<TDeps>>(key: TKey) => TDeps[TKey];
+  resolveSync: <TDepsKey extends DepsKey<TDeps>>(key: TDepsKey) => TDeps[TDepsKey];
 
   /**
    * Returns a list of dependencies that are currently initializing.
