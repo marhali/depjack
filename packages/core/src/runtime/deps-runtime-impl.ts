@@ -8,6 +8,9 @@ import determineDepsOrder from '@depjack/core/runtime/determine-deps-order';
 import createDepsGraph from '@depjack/core/runtime/create-deps-graph';
 import createReactiveState, { type ReactiveState } from '@depjack/core/supportive/reactive-state';
 
+/**
+ * Reference implementation of a deps runtime.
+ */
 class DepsRuntimeImpl<TDeps extends Deps> implements DepsRuntime<TDeps> {
   private readonly depsGraph: DepsGraph<TDeps>;
   private readonly state: ReactiveState<DepsState<TDeps>>;

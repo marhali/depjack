@@ -18,6 +18,11 @@ const defaultRuntimeOptions: DepsRuntimeOptions = {
  * @param depsDefinition Dependencies definition
  * @param depsFactory Dependencies factory
  * @param options Optional configuration for the runtime
+ * @see DepsDefinition
+ * @see DepsFactory
+ * @example ```ts
+ * const depsRuntime = createDepsRuntime<MyDeps>(myDepsDefinition, myDepsFactory);
+ * ```
  */
 function createDepsRuntime<TDeps extends Deps>(
   depsDefinition: DepsDefinition<TDeps>,
