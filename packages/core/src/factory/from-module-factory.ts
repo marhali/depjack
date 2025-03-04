@@ -10,10 +10,10 @@
  *   return new MyModule(needs);
  * }
  *
- * // factory definition
+ * // factory.ts
  * const myFactories = {
  *   myModule: fromModuleFactory(() => import('mymodule.ts')),
- * };
+ * } satisfies DepsFactory<MyDeps, typeof myDepsDefinition>;
  * ```
  * @param moduleLoader Callback function that resolves to the target module
  */
