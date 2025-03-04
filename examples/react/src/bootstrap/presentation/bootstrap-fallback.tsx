@@ -1,11 +1,8 @@
-import { useSyncExternalStore } from 'react';
+import useInitializingDeps from '@depjack/react/use-initializing-deps';
 import rootDepsRuntime from '~/examples/react/bootstrap/root-deps-runtime';
 
 function BootstrapFallback() {
-  const initializing = useSyncExternalStore(
-    (onStoreChange) => rootDepsRuntime.subscribe('initializing', onStoreChange),
-    () => rootDepsRuntime.getInitializing(),
-  );
+  const initializing = useInitializingDeps(rootDepsRuntime);
 
   return (
     <div>

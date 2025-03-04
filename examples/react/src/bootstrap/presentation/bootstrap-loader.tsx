@@ -1,8 +1,9 @@
-import { type PropsWithChildren, use } from 'react';
+import { type PropsWithChildren } from 'react';
+import useBootstrapDepsRuntime from '@depjack/react/use-bootstrap-deps-runtime';
 import rootDepsRuntime from '~/examples/react/bootstrap/root-deps-runtime';
 
 function BootstrapLoader({ children }: PropsWithChildren) {
-  use(rootDepsRuntime.bootstrap());
+  useBootstrapDepsRuntime(rootDepsRuntime);
   return children;
 }
 

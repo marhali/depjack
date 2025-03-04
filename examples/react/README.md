@@ -1,1 +1,1 @@
-# depjack @ React + TypeScript + Vite
+# depjack examples @ React + TypeScript + Vite
