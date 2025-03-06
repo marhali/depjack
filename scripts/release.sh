@@ -5,4 +5,4 @@ pnpm --filter @depjack/core build
 pnpm --filter @depjack/react build
 
 # Publish
-pnx @changesets/cli publish
+pnpm changeset publish
