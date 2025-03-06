@@ -22,11 +22,32 @@
     "injecton",
     "core"
   ],
+  "exports": {
+    "./defintion": {
+      "types": "./dist/definition.d.ts",
+      "import": "./dist/definition.js",
+      "require": "./dist/definition.cjs"
+    },
+    "./factory": {
+      "types": "./dist/factory.d.ts",
+      "import": "./dist/factory.js",
+      "require": "./dist/factory.cjs"
+    },
+    "./runtime": {
+      "types": "./dist/runtime.d.ts",
+      "import": "./dist/runtime.js",
+      "require": "./dist/runtime.cjs"
+    }
+  },
   "scripts": {
-    "test": "vitest"
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest",
+    "build": "vite build"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "3.0.7",
     "vite": "6.2.0",
+    "vite-plugin-dts": "4.5.3",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.0.7"
   }
