@@ -3,4 +3,4 @@
 '@depjack/react': minor
 ---
 
-Initial release
+Initial release (test)
