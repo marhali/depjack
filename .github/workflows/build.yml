@@ -1,0 +1,119 @@
+# GitHub Actions Workflow to set up the environment, run tests, build the artifact and inspect code.
+# Workflow runs: every pull_request & push on main or next branch.
+# Uses a strategy matrix to validate all packages and examples.
+
+name: Build
+
+on:
+  push:
+    branches: [ main, next ]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Run static code analyses with eslint + prettier
+  lint:
+    name: Lint
+    strategy:
+      matrix:
+        workdir: [packages/core, packages/react, examples/standalone, examples/react]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Switching to workdir "${{ matrix.workdir }}"
+        run: cd ${{ matrix.workdir }}
+
+      - name: Run lint
+        run: pnpm lint
+
+  # Run tests and upload code coverage report
+  test:
+    name: Test
+    strategy:
+      matrix:
+        workdir: [ packages/core, packages/react, examples/standalone, examples/react ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Switching to workdir "${{ matrix.workdir }}"
+        run: cd ${{ matrix.workdir }}
+
+      - name: Run tests
+        run: pnpm test --coverage --reporter=junit --outputFile=test-report.junit.xml
+
+      - name: Upload test report to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload coverage report to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  # Build artifact assets
+  build:
+    name: Build
+    strategy:
+      matrix:
+        workdir: [ packages/core, packages/react, examples/standalone, examples/react ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Switching to workdir "${{ matrix.workdir }}"
+        run: cd ${{ matrix.workdir }}
+
+      - name: Run build
+        run: pnpm build
