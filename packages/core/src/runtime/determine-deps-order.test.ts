@@ -28,23 +28,25 @@ describe('determineDepsOrder()', () => {
     });
   });
   describe('with transitive predecessors', () => {
-    const order = determineDepsOrder<{
-      pre_1_a: unknown;
-      pre_1: unknown;
-      pre_2_a: unknown;
-      pre_2: unknown;
-      self: unknown;
-      other: unknown;
-    }>(new Set(['self']), {
-      pre_1_a: new Set(),
-      pre_1: new Set(['pre_1_a']),
-      pre_2_a: new Set(),
-      pre_2: new Set(['pre_2_a']),
-      self: new Set(['pre_1', 'pre_2']),
-      other: new Set(),
-    });
+    it('should should return all predecessors including transitive deps and self as last key', () => {
+      const order = determineDepsOrder<{
+        pre_1_a: unknown;
+        pre_1: unknown;
+        pre_2_a: unknown;
+        pre_2: unknown;
+        self: unknown;
+        other: unknown;
+      }>(new Set(['self']), {
+        pre_1_a: new Set(),
+        pre_1: new Set(['pre_1_a']),
+        pre_2_a: new Set(),
+        pre_2: new Set(['pre_2_a']),
+        self: new Set(['pre_1', 'pre_2']),
+        other: new Set(),
+      });
 
-    expect(order).toStrictEqual(['pre_1_a', 'pre_1', 'pre_2_a', 'pre_2', 'self']);
+      expect(order).toStrictEqual(['pre_1_a', 'pre_1', 'pre_2_a', 'pre_2', 'self']);
+    });
   });
   describe('with circular predecessors', () => {
     it('should throw exception with occurring key', () => {
