@@ -23,6 +23,7 @@
     "core"
   ],
   "sideEffects": false,
+  "files": ["dist"],
   "exports": {
     "./defintion": {
       "types": "./dist/definition.d.ts",
@@ -43,7 +44,8 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "test": "vitest",
-    "build": "vite build"
+    "build": "vite build",
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "3.0.7",

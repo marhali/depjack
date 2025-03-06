@@ -1,6 +1,8 @@
 # GitHub Actions Workflow to set up the environment, run tests, build the artifact and inspect code.
 # Workflow runs: every pull_request & push on main or next branch.
 # Uses a strategy matrix to validate all packages and examples.
+# Job execution order:
+# Executes lint, test and build jobs in parallel with matrix strategy.
 
 name: Build
 
