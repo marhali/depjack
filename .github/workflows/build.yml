@@ -39,11 +39,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Switching to workdir "${{ matrix.workdir }}"
-        run: cd ${{ matrix.workdir }}
-
       - name: Run lint
         run: pnpm lint
+        working-directory: ${{ matrix.workdir }}
 
   # Run tests and upload code coverage report
   test:
@@ -70,11 +68,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Switching to workdir "${{ matrix.workdir }}"
-        run: cd ${{ matrix.workdir }}
-
       - name: Run tests
         run: pnpm test --coverage --reporter=junit --outputFile=test-report.junit.xml
+        working-directory: ${{ matrix.workdir }}
 
       - name: Upload test report to Codecov
         if: ${{ !cancelled() }}
@@ -112,8 +108,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Switching to workdir "${{ matrix.workdir }}"
-        run: cd ${{ matrix.workdir }}
-
       - name: Run build
         run: pnpm build
+        working-directory: ${{ matrix.workdir }}
