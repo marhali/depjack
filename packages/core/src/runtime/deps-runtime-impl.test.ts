@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import type { Logger } from '@depjack/core/supportive/logger.ts';
-import type { DepsDefinition, DepsKey } from '@depjack/core/definition';
+import type { DepsDefinition } from '@depjack/core/definition';
 import type { DepsFactory } from '@depjack/core/factory';
 import DepsRuntimeImpl from '@depjack/core/runtime/deps-runtime-impl';
 import createDepsGraph from '@depjack/core/runtime/create-deps-graph';
@@ -14,6 +14,7 @@ describe('DepsRuntimeImpl', () => {
     charlie: string;
     lazyDelta: string;
     lazyEcho: string;
+    lazyFoxtrot: string;
   };
   let depsDefinition: DepsDefinition<Type>;
   let depsInstance: Type;
@@ -39,10 +40,15 @@ describe('DepsRuntimeImpl', () => {
       },
       lazyDelta: {
         lazy: true,
-        needs: ['alpha', 'bravo', 'charlie'],
+        needs: ['alpha', 'bravo', 'charlie', 'lazyFoxtrot'],
         needsLazy: ['lazyEcho'],
       },
       lazyEcho: {
+        lazy: true,
+        needs: [],
+        needsLazy: [],
+      },
+      lazyFoxtrot: {
         lazy: true,
         needs: [],
         needsLazy: [],
@@ -54,6 +60,7 @@ describe('DepsRuntimeImpl', () => {
       charlie: 'charlieInstance',
       lazyEcho: 'lazyEchoInstance',
       lazyDelta: 'lazyDeltaInstance',
+      lazyFoxtrot: 'lazyFoxtrotInstance',
     };
     depsFactory = {
       alpha: vi.fn().mockResolvedValue(depsInstance.alpha),
@@ -61,6 +68,7 @@ describe('DepsRuntimeImpl', () => {
       charlie: vi.fn().mockResolvedValue(depsInstance.charlie),
       lazyDelta: vi.fn().mockResolvedValue(depsInstance.lazyDelta),
       lazyEcho: vi.fn().mockResolvedValue(depsInstance.lazyEcho),
+      lazyFoxtrot: vi.fn().mockResolvedValue(depsInstance.lazyFoxtrot),
     };
     logger = {
       log: vi.fn(),
@@ -182,39 +190,51 @@ describe('DepsRuntimeImpl', () => {
 
           const initPromise = runtime.resolve('lazyDelta');
 
-          expect(initializingListener).toHaveBeenCalledTimes(1);
-          expect(initializingListener).toHaveBeenLastCalledWith(['lazyDelta']);
-          expect(runtime.getInitializing()).toStrictEqual(['lazyDelta']);
+          expect(initializingListener).toHaveBeenCalledTimes(2);
+          expect(initializingListener).toHaveBeenNthCalledWith(1, ['lazyDelta']);
+          expect(initializingListener).toHaveBeenNthCalledWith(2, ['lazyDelta', 'lazyFoxtrot']);
+          expect(runtime.getInitializing()).toStrictEqual(['lazyDelta', 'lazyFoxtrot']);
           expect(logger.debug).toHaveBeenCalledWith(
             `Initializing dependency "lazyDelta" with needs on (${depsDefinition.lazyDelta.needs.join(', ')}) and lazy needs on (${depsDefinition.lazyDelta.needsLazy.join(', ')})...`,
           );
+
+          const instance = await initPromise;
+
           expect(logger.debug).toHaveBeenCalledWith('Resolved needed instances for dependency "lazyDelta"', {
             alpha: depsInstance.alpha,
             bravo: depsInstance.bravo,
             charlie: depsInstance.charlie,
+            lazyFoxtrot: depsInstance.lazyFoxtrot,
           });
           expect(logger.debug).toHaveBeenCalledWith('Resolved lazy needed instances for dependency "lazyDelta"', {
             lazyEcho: expect.any(Function) as never,
           });
 
-          const instance = await initPromise;
-
           expect(logger.debug).toHaveBeenCalledWith('Dependency "lazyDelta" initialized', depsInstance.lazyDelta);
-          expect(instancesListener).toHaveBeenCalledTimes(1);
-          expect(instancesListener).toHaveBeenLastCalledWith({
+          expect(instancesListener).toHaveBeenCalledTimes(2);
+          expect(instancesListener).toHaveBeenNthCalledWith(1, {
+            charlie: depsInstance.charlie,
+            bravo: depsInstance.bravo,
+            alpha: depsInstance.alpha,
+            lazyFoxtrot: depsInstance.lazyFoxtrot,
+          });
+          expect(instancesListener).toHaveBeenNthCalledWith(2, {
             charlie: depsInstance.charlie,
             bravo: depsInstance.bravo,
             alpha: depsInstance.alpha,
             lazyDelta: depsInstance.lazyDelta,
+            lazyFoxtrot: depsInstance.lazyFoxtrot,
           });
-          expect(initializingListener).toHaveBeenCalledTimes(2);
-          expect(initializingListener).toHaveBeenLastCalledWith([]);
-          expect(resolversListener).toHaveBeenCalledTimes(1);
+          expect(initializingListener).toHaveBeenCalledTimes(4);
+          expect(initializingListener).toHaveBeenNthCalledWith(3, ['lazyDelta']);
+          expect(initializingListener).toHaveBeenNthCalledWith(4, []);
+          expect(resolversListener).toHaveBeenCalledTimes(2);
           expect(resolversListener).toHaveBeenLastCalledWith({
             charlie: expect.any(Promise) as Promise<Type['charlie']>,
             bravo: expect.any(Promise) as Promise<Type['bravo']>,
             alpha: expect.any(Promise) as Promise<Type['alpha']>,
             lazyDelta: expect.any(Promise) as Promise<Type['lazyDelta']>,
+            lazyFoxtrot: expect.any(Promise) as Promise<Type['lazyFoxtrot']>,
           });
           expect(instance).toStrictEqual(depsInstance.lazyDelta);
         });
@@ -243,16 +263,6 @@ describe('DepsRuntimeImpl', () => {
     describe('isBootstrapped()', () => {
       it('should return true', () => {
         expect(runtime.isBootstrapped()).toBeTruthy();
-      });
-    });
-    describe('internalInitializeDep()', () => {
-      it('should throw exception if required (needs) dependency is missing', async () => {
-        // Assert unexpected needed dependency on "lazyEcho"
-        runtime['depsDefinition']['lazyEcho'].needs = ['myUnknownKey' as DepsKey<Type>];
-
-        await expect(() => runtime['internalInitializeDep']('lazyEcho')).rejects.toThrowError(
-          'Missing needed dependency instance "myUnknownKey" whilst initializing dependency "lazyEcho".',
-        );
       });
     });
   });

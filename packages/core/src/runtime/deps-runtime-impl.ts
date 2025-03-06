@@ -139,13 +139,8 @@ class DepsRuntimeImpl<TDeps extends Deps> implements DepsRuntime<TDeps> {
     for (const neededKey of neededKeys) {
       const neededInstance = this.state.get('instances')[neededKey];
 
-      if (!neededInstance) {
-        throw new Error(
-          `Missing needed dependency instance "${String(neededKey)}" whilst initializing dependency "${String(key)}".`,
-        );
-      }
-
-      neededInstances[neededKey] = neededInstance;
+      neededInstances[neededKey] =
+        neededInstance === undefined ? await this.internalResolveDep(neededKey) : neededInstance;
     }
 
     const neededLazyInstances = {} as DepsLazyFunction<TDeps>;
