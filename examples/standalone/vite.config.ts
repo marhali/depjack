@@ -1,12 +1,21 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import react from '@vitejs/plugin-react-swc';
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [tsconfigPaths(), react()],
+  plugins: [tsconfigPaths()],
+  build: {
+    target: 'esnext',
+    minify: false,
+    lib: {
+      formats: ['es'],
+      entry: {
+        index: 'src/main.ts',
+      },
+    },
+  },
   test: {
-    environment: 'jsdom',
+    // ...
   },
 });
