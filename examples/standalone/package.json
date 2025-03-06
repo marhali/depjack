@@ -24,9 +24,13 @@
     "example",
     "standalone"
   ],
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest",
+    "build": "tsc && vite build"
+  },
   "devDependencies": {
-    "@types/node": "^22.13.9"
+    "@types/node": "22.13.9"
   },
   "dependencies": {
     "@depjack/core": "workspace:*"

@@ -8,6 +8,7 @@ export default defineConfig({
   build: {
     minify: false,
     lib: {
+      formats: ['es', 'cjs'],
       entry: {
         definition: 'src/definition/index.ts',
         factory: 'src/factory/index.ts',

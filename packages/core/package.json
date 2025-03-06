@@ -22,6 +22,7 @@
     "injecton",
     "core"
   ],
+  "sideEffects": false,
   "exports": {
     "./defintion": {
       "types": "./dist/definition.d.ts",

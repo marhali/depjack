@@ -83,7 +83,7 @@ importers:
         version: link:../../packages/core
     devDependencies:
       '@types/node':
-        specifier: ^22.13.9
+        specifier: 22.13.9
         version: 22.13.9
 
   packages/core:
