@@ -74,16 +74,21 @@ jobs:
         run: pnpm test --coverage --reporter=junit --outputFile=test-report.junit.xml
         working-directory: ${{ matrix.workdir }}
 
+      - name: Determine Codecov flags
+        run: echo "CODECOV_FLAGS=${{ matrix.workdir }}" | tr '/' '.' >> $GITHUB_ENV
+
       - name: Upload test report to Codecov
         if: ${{ !cancelled() }}
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          flags: ${{ env.CODECOV_FLAGS }}
 
       - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          flags: ${{ env.CODECOV_FLAGS }}
 
   # Build artifact assets
   build:
