@@ -1,7 +1,7 @@
 {
   "name": "@depjack/core",
   "type": "module",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Depjack standalone core.",
   "author": "Marcel Haßlinger <contact@marhali.de>",
   "license": "MIT",
@@ -23,7 +23,9 @@
     "core"
   ],
   "sideEffects": false,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     "./defintion": {
       "types": "./dist/definition.d.ts",
