@@ -10,9 +10,7 @@ export default defineConfig({
     lib: {
       formats: ['es', 'cjs'],
       entry: {
-        definition: 'src/definition/index.ts',
-        factory: 'src/factory/index.ts',
-        runtime: 'src/runtime/index.ts',
+        index: 'src/index.ts',
       },
     },
   },
