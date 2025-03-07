@@ -1,5 +1,11 @@
 # @depjack/core
 
+## 1.0.1
+
+### Patch Changes
+
+- 3140774: No changes
+
 ## 1.0.0
 
 ### Major Changes

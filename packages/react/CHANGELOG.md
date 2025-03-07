@@ -1,5 +1,13 @@
 # @depjack/react
 
+## 1.0.1
+
+### Patch Changes
+
+- 3140774: No changes
+- Updated dependencies [3140774]
+  - @depjack/core@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
