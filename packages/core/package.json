@@ -1,7 +1,7 @@
 {
   "name": "@depjack/core",
   "type": "module",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Depjack standalone core.",
   "author": "Marcel Haßlinger <contact@marhali.de>",
   "license": "MIT",
