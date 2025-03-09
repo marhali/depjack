@@ -80,6 +80,7 @@ export default myDepsDefinition;
 #### Dependencies Factory
 
 Provision of the factory function for each dependency. Each function receives the in [the definition](#dependencies-definition) defined dependencies as a object in the first parameter.
+In most cases, it makes sense to specify [dedicated dependency modules](src/factory/from-module-factory.ts) to split the code and reduce the initial size of the application.
 
 ```ts
 // my-deps-factory.ts
@@ -95,6 +96,22 @@ const myDepsFactory = {
 } satisfies DepsFactory<MyDeps, typeof myDepsDefinition>;
 
 export default myDepsFactory;
+```
+
+```ts
+// my-service-a.ts
+
+import { DepFactory } from '@depjack/core';
+import { MyDeps } from './my-deps';
+import myDepsDefinition from './my-deps-definition';
+
+export class MyServiceAImpl implements MyServiceAType {
+  // ...
+}
+
+export const factory: DepFactory<MyDeps, typeof myDepsDefinition, 'myServiceA'> = (needs) => {
+  return Promise.resolve(new MyServiceAImpl(needs['...']));
+};
 ```
 
 ### Runtime

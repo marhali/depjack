@@ -4,7 +4,9 @@
  * which will create an instance of the requested dependency.
  * @example ```ts
  * // mymodule.ts
- * class MyModule {}
+ * class MyModule {
+ *   // ...
+ * }
  *
  * export const factory: DepFactory<MyDeps, typeof myDepsDefinition, 'myModule'> = async (needs) => {
  *   return new MyModule(needs);
