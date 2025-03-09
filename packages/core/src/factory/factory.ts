@@ -1,4 +1,4 @@
-import type { Deps, DepsDefinition, DepsLazyFunction } from '@depjack/core/definition';
+import type { Deps, DepsDefinition, DepsLazyFunction } from '@/core/definition';
 
 /**
  * Defines the factory function for each dependency.

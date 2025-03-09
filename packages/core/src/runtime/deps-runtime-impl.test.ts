@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
-import type { Logger } from '@depjack/core/supportive/logger.ts';
-import type { DepsDefinition } from '@depjack/core/definition';
-import type { DepsFactory } from '@depjack/core/factory';
-import DepsRuntimeImpl from '@depjack/core/runtime/deps-runtime-impl';
-import createDepsGraph from '@depjack/core/runtime/create-deps-graph';
-import determineInitDeps from '@depjack/core/runtime/determine-init-deps';
-import determineDepsOrder from '@depjack/core/runtime/determine-deps-order';
+import type { Logger } from '@/core/supportive/logger.ts';
+import type { DepsDefinition } from '@/core/definition';
+import type { DepsFactory } from '@/core/factory';
+import DepsRuntimeImpl from '@/core/runtime/deps-runtime-impl';
+import createDepsGraph from '@/core/runtime/create-deps-graph';
+import determineInitDeps from '@/core/runtime/determine-init-deps';
+import determineDepsOrder from '@/core/runtime/determine-deps-order';
 
 describe('DepsRuntimeImpl', () => {
   type Type = {

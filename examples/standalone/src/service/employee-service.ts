@@ -1,4 +1,4 @@
-import type { EmployeeRepository } from '~/examples/standalone/repository/employee-repository';
+import type { EmployeeRepository } from '~/standalone/repository/employee-repository';
 
 export interface EmployeeService {
   repository: EmployeeRepository;

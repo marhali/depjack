@@ -1,6 +1,6 @@
-import type { PartialDepsDefinition } from '@depjack/core/definition';
-import type { MyDeps } from '~/examples/standalone/bootstrap/my-deps';
-import type { ClientDeps } from '~/examples/standalone/client/client-deps';
+import type { PartialDepsDefinition } from '@depjack/core';
+import type { MyDeps } from '~/standalone/bootstrap/my-deps';
+import type { ClientDeps } from '~/standalone/client/client-deps';
 
 const clientDepsDefinition = {
   'client.auth': {

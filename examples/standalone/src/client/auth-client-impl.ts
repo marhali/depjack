@@ -1,7 +1,7 @@
-import type { AuthClient } from '~/examples/standalone/client/auth-client';
-import type { DepFactory } from '@depjack/core/factory';
-import type { MyDeps } from '~/examples/standalone/bootstrap/my-deps';
-import type myDepsDefinition from '~/examples/standalone/bootstrap/my-deps-definition';
+import type { DepFactory } from '@depjack/core';
+import type { AuthClient } from '~/standalone/client/auth-client';
+import type { MyDeps } from '~/standalone/bootstrap/my-deps';
+import type myDepsDefinition from '~/standalone/bootstrap/my-deps-definition';
 
 export class AuthClientImpl implements AuthClient {
   getAccessToken(): Promise<string> {

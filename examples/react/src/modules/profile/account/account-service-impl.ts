@@ -1,8 +1,8 @@
-import type { DepFactory } from '@depjack/core/factory';
-import type { AccountService } from '~/examples/react/modules/profile/account/account-service';
-import type { RestClientService } from '~/examples/react/core/rest-client/rest-client-service';
-import type { RootDeps } from '~/examples/react/bootstrap/root-deps';
-import type rootDepsDefinition from '~/examples/react/bootstrap/root-deps-definition';
+import type { DepFactory } from '@depjack/core';
+import type { AccountService } from '~/react/modules/profile/account/account-service';
+import type { RestClientService } from '~/react/core/rest-client/rest-client-service';
+import type { RootDeps } from '~/react/bootstrap/root-deps';
+import type rootDepsDefinition from '~/react/bootstrap/root-deps-definition';
 
 export class AccountServiceImpl implements AccountService {
   constructor(private readonly restClientService: RestClientService) {}

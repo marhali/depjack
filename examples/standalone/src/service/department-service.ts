@@ -1,4 +1,4 @@
-import type { DepartmentRepository } from '~/examples/standalone/repository/department-repository';
+import type { DepartmentRepository } from '~/standalone/repository/department-repository';
 
 export interface DepartmentService {
   repository: DepartmentRepository;

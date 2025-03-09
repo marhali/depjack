@@ -1,1 +1,1 @@
-export * from '@depjack/core/definition/definition';
+export * from '@/core/definition/definition';

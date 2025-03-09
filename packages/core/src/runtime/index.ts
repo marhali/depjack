@@ -1,1 +1,2 @@
-export { default as createDepsRuntime } from '@depjack/core/runtime/create-deps-runtime';
+export { default as createDepsRuntime } from '@/core/runtime/create-deps-runtime';
+export * from '@/core/runtime/deps-runtime';

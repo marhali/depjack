@@ -1,8 +1,8 @@
-import type { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
-import type { Deps, DepsDefinition } from '@depjack/core/definition';
-import type { DepsFactory } from '@depjack/core/factory';
-import type { Logger } from '@depjack/core/supportive/logger';
-import DepsRuntimeImpl from '@depjack/core/runtime/deps-runtime-impl';
+import type { DepsRuntime } from '@/core/runtime/deps-runtime';
+import type { Deps, DepsDefinition } from '@/core/definition';
+import type { DepsFactory } from '@/core/factory';
+import type { Logger } from '@/core/supportive/logger';
+import DepsRuntimeImpl from '@/core/runtime/deps-runtime-impl';
 
 type DepsRuntimeOptions = {
   /** Logger to use for the runtime. */

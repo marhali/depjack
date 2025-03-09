@@ -1,6 +1,5 @@
 import { use } from 'react';
-import type { Deps, DepsKey } from '@depjack/core/definition';
-import type { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
+import type { Deps, DepsKey, DepsRuntime } from '@depjack/core';
 
 /**
  * Hook to resolve a dependency from the runtime.

@@ -1,6 +1,6 @@
-import type { PartialDepsDefinition } from '@depjack/core/definition';
-import type { MyDeps } from '~/examples/standalone/bootstrap/my-deps';
-import type { ServiceDeps } from '~/examples/standalone/service/service-deps';
+import type { PartialDepsDefinition } from '@depjack/core';
+import type { MyDeps } from '~/standalone/bootstrap/my-deps';
+import type { ServiceDeps } from '~/standalone/service/service-deps';
 
 const serviceDepsDefinition = {
   'service.employee': {

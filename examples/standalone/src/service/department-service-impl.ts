@@ -1,9 +1,9 @@
-import type { DepartmentService } from '~/examples/standalone/service/department-service';
-import type { DepartmentRepository } from '~/examples/standalone/repository/department-repository';
-import type { EmployeeRepository } from '~/examples/standalone/repository/employee-repository';
-import type { DepFactory } from '@depjack/core/factory';
-import type { MyDeps } from '~/examples/standalone/bootstrap/my-deps';
-import type myDepsDefinition from '~/examples/standalone/bootstrap/my-deps-definition';
+import type { DepFactory } from '@depjack/core';
+import type { DepartmentService } from '~/standalone/service/department-service';
+import type { DepartmentRepository } from '~/standalone/repository/department-repository';
+import type { EmployeeRepository } from '~/standalone/repository/employee-repository';
+import type { MyDeps } from '~/standalone/bootstrap/my-deps';
+import type myDepsDefinition from '~/standalone/bootstrap/my-deps-definition';
 
 export class DepartmentServiceImpl implements DepartmentService {
   constructor(

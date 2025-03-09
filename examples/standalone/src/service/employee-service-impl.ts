@@ -1,8 +1,8 @@
-import type { EmployeeService } from '~/examples/standalone/service/employee-service';
-import type { EmployeeRepository } from '~/examples/standalone/repository/employee-repository';
-import type { DepFactory } from '@depjack/core/factory';
-import type { MyDeps } from '~/examples/standalone/bootstrap/my-deps';
-import type myDepsDefinition from '~/examples/standalone/bootstrap/my-deps-definition';
+import type { DepFactory } from '@depjack/core';
+import type { EmployeeService } from '~/standalone/service/employee-service';
+import type { EmployeeRepository } from '~/standalone/repository/employee-repository';
+import type { MyDeps } from '~/standalone/bootstrap/my-deps';
+import type myDepsDefinition from '~/standalone/bootstrap/my-deps-definition';
 
 export class EmployeeServiceImpl implements EmployeeService {
   constructor(private readonly employeeRepository: EmployeeRepository) {

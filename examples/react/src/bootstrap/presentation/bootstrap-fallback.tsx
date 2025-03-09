@@ -1,5 +1,5 @@
-import useInitializingDeps from '@depjack/react/use-initializing-deps';
-import rootDepsRuntime from '~/examples/react/bootstrap/root-deps-runtime';
+import { useInitializingDeps } from '@depjack/react';
+import rootDepsRuntime from '~/react/bootstrap/root-deps-runtime';
 
 function BootstrapFallback() {
   const initializing = useInitializingDeps(rootDepsRuntime);

@@ -1,4 +1,4 @@
-import type { Deps, DepsDefinition, DepsKey } from '@depjack/core/definition';
+import type { Deps, DepsDefinition, DepsKey } from '@/core/definition';
 
 /**
  * Determines all dependencies that must be initialized when the runtime environment is initialized.

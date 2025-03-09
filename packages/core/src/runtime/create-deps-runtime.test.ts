@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
-import type { DepsDefinition } from '@depjack/core/definition';
-import type { DepsFactory } from '@depjack/core/factory';
-import type { Logger } from '@depjack/core/supportive/logger';
-import DepsRuntimeImpl from '@depjack/core/runtime/deps-runtime-impl';
-import createDepsRuntime from '@depjack/core/runtime/create-deps-runtime';
+import type { DepsDefinition } from '@/core/definition';
+import type { DepsFactory } from '@/core/factory';
+import type { Logger } from '@/core/supportive/logger';
+import DepsRuntimeImpl from '@/core/runtime/deps-runtime-impl';
+import createDepsRuntime from '@/core/runtime/create-deps-runtime';
 
-vi.mock('@depjack/core/runtime/deps-runtime-impl');
+vi.mock('@/core/runtime/deps-runtime-impl');
 
 describe('createDepsRuntime()', () => {
   type MyDeps = { sampleDep: string };

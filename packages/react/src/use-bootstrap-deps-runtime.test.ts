@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
-import type { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
 import { act, renderHook } from '@testing-library/react';
-import useBootstrapDepsRuntime from '@depjack/react/use-bootstrap-deps-runtime';
-import SuspenseWrapper from '@depjack/react/__tests__/suspense-wrapper';
+import type { DepsRuntime } from '@depjack/core';
+import useBootstrapDepsRuntime from '@/react/use-bootstrap-deps-runtime';
+import SuspenseWrapper from '@/react/__tests__/suspense-wrapper';
 
 describe('useBootstrapDepsRuntime()', () => {
   it('should should trigger suspense and resolve bootstrap promise', async () => {

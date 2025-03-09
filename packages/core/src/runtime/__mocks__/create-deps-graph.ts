@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import type { DepsGraph } from '@depjack/core/definition';
+import type { DepsGraph } from '@/core/definition';
 
 export const mockedCreateDepsGraph: DepsGraph<Record<string, unknown>> = {};
 

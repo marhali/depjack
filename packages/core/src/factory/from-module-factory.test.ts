@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import fromModuleFactory from '@depjack/core/factory/from-module-factory';
+import fromModuleFactory from '@/core/factory/from-module-factory';
 
 describe('fromModuleFactory()', () => {
   it('should return callback function that resolves the moduleLoader and calls the factory method with needs as payload', async () => {

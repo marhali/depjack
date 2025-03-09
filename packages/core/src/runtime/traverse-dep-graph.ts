@@ -1,4 +1,4 @@
-import type { Deps, DepsDefinition, DepsKey } from '@depjack/core/definition';
+import type { Deps, DepsDefinition, DepsKey } from '@/core/definition';
 
 /**
  * Travers the entire dependency graph and returns the direct and transitive

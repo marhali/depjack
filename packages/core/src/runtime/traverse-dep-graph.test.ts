@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import traverseDepGraph from '@depjack/core/runtime/traverse-dep-graph';
+import traverseDepGraph from '@/core/runtime/traverse-dep-graph';
 
 describe('traverseDepGraph()', () => {
   describe('with zero descendants', () => {

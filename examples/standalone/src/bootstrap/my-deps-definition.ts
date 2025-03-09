@@ -1,8 +1,8 @@
-import type { DepsDefinition } from '@depjack/core/definition';
-import type { MyDeps } from '~/examples/standalone/bootstrap/my-deps';
-import clientDepsDefinition from '~/examples/standalone/client/client-deps-definition';
-import repositoryDepsDefinition from '~/examples/standalone/repository/repository-deps-definition';
-import serviceDepsDefinition from '~/examples/standalone/service/service-deps-definition';
+import type { DepsDefinition } from '@depjack/core';
+import type { MyDeps } from '~/standalone/bootstrap/my-deps';
+import clientDepsDefinition from '~/standalone/client/client-deps-definition';
+import repositoryDepsDefinition from '~/standalone/repository/repository-deps-definition';
+import serviceDepsDefinition from '~/standalone/service/service-deps-definition';
 
 const myDepsDefinition = {
   ...clientDepsDefinition,

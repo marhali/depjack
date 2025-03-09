@@ -1,10 +1,10 @@
 import { describe, it, vi, expect } from 'vitest';
-import createDepsGraph from '@depjack/core/runtime/create-deps-graph';
-import traverseDepGraph from '@depjack/core/runtime/traverse-dep-graph';
-import { mockedTraverseDepGraph } from '@depjack/core/runtime/__mocks__/traverse-dep-graph';
-import type { DepsDefinition } from '@depjack/core/definition';
+import createDepsGraph from '@/core/runtime/create-deps-graph';
+import traverseDepGraph from '@/core/runtime/traverse-dep-graph';
+import { mockedTraverseDepGraph } from '@/core/runtime/__mocks__/traverse-dep-graph';
+import type { DepsDefinition } from '@/core/definition';
 
-vi.mock('@depjack/core/runtime/traverse-dep-graph');
+vi.mock('@/core/runtime/traverse-dep-graph');
 
 describe('createDepsGraph()', () => {
   describe('with empty deps definition', () => {

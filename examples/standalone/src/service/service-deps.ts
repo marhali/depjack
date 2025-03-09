@@ -1,5 +1,5 @@
-import type { DepartmentService } from '~/examples/standalone/service/department-service';
-import type { EmployeeService } from '~/examples/standalone/service/employee-service';
+import type { DepartmentService } from '~/standalone/service/department-service';
+import type { EmployeeService } from '~/standalone/service/employee-service';
 
 export type ServiceDeps = {
   'service.department': DepartmentService;

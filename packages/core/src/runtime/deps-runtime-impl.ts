@@ -1,12 +1,12 @@
-import type { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
-import type { Deps, DepsDefinition, DepsKey, DepsGraph, DepsLazyFunction } from '@depjack/core/definition';
-import type { DepsFactory } from '@depjack/core/factory';
-import type { DepsState } from '@depjack/core/runtime/deps-state';
-import type { Logger } from '@depjack/core/supportive/logger';
-import determineInitDeps from '@depjack/core/runtime/determine-init-deps';
-import determineDepsOrder from '@depjack/core/runtime/determine-deps-order';
-import createDepsGraph from '@depjack/core/runtime/create-deps-graph';
-import createReactiveState, { type ReactiveState } from '@depjack/core/supportive/reactive-state';
+import type { DepsRuntime } from '@/core/runtime/deps-runtime';
+import type { Deps, DepsDefinition, DepsKey, DepsGraph, DepsLazyFunction } from '@/core/definition';
+import type { DepsFactory } from '@/core/factory';
+import type { DepsState } from '@/core/runtime/deps-state';
+import type { Logger } from '@/core/supportive/logger';
+import determineInitDeps from '@/core/runtime/determine-init-deps';
+import determineDepsOrder from '@/core/runtime/determine-deps-order';
+import createDepsGraph from '@/core/runtime/create-deps-graph';
+import createReactiveState, { type ReactiveState } from '@/core/supportive/reactive-state';
 
 /**
  * Reference implementation of a deps runtime.

@@ -1,6 +1,6 @@
-import type { PartialDepsDefinition } from '@depjack/core/definition';
-import type { RootDeps } from '~/examples/react/bootstrap/root-deps';
-import type { CoreDeps } from '~/examples/react/core/core-deps';
+import type { PartialDepsDefinition } from '@depjack/core';
+import type { RootDeps } from '~/react/bootstrap/root-deps';
+import type { CoreDeps } from '~/react/core/core-deps';
 
 const coreDepsDefinition = {
   'core.environment': {

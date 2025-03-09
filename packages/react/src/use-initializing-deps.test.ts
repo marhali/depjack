@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
-import type { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
-import useInitializingDeps from '@depjack/react/use-initializing-deps';
+import type { DepsRuntime } from '@depjack/core';
+import useInitializingDeps from '@/react/use-initializing-deps';
 
 describe('useInitializingDeps()', () => {
   it('should return reactive list of dependencies that are in the process of initialization', () => {

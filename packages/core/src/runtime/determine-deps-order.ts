@@ -1,4 +1,4 @@
-import type { Deps, DepsKey, DepsGraph } from '@depjack/core/definition';
+import type { Deps, DepsKey, DepsGraph } from '@/core/definition';
 
 /**
  * Determines the initialization order of the provided deps utilizing the dependencies graph.

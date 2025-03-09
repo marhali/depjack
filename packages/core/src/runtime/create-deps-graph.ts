@@ -1,5 +1,5 @@
-import type { Deps, DepsDefinition, DepsKey, DepsGraph } from '@depjack/core/definition';
-import traverseDepGraph from '@depjack/core/runtime/traverse-dep-graph';
+import type { Deps, DepsDefinition, DepsKey, DepsGraph } from '@/core/definition';
+import traverseDepGraph from '@/core/runtime/traverse-dep-graph';
 
 /**
  * Creates the dependency graph for the provided dependencies' definition.

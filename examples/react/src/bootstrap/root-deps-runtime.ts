@@ -1,7 +1,7 @@
-import createDepsRuntime from '@depjack/core/runtime/create-deps-runtime';
-import type { RootDeps } from '~/examples/react/bootstrap/root-deps';
-import rootDepsDefinition from '~/examples/react/bootstrap/root-deps-definition';
-import rootDepsFactory from '~/examples/react/bootstrap/root-deps-factory';
+import { createDepsRuntime } from '@depjack/core';
+import type { RootDeps } from '~/react/bootstrap/root-deps';
+import rootDepsDefinition from '~/react/bootstrap/root-deps-definition';
+import rootDepsFactory from '~/react/bootstrap/root-deps-factory';
 
 const rootDepsRuntime = createDepsRuntime<RootDeps>(rootDepsDefinition, rootDepsFactory);
 

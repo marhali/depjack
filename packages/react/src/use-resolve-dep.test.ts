@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest';
 import { act, renderHook, waitFor } from '@testing-library/react';
-import type { DepsRuntime } from '@depjack/core/runtime/deps-runtime';
-import useResolveDep from '@depjack/react/use-resolve-dep';
-import SuspenseWrapper from '@depjack/react/__tests__/suspense-wrapper';
+import type { DepsRuntime } from '@depjack/core';
+import useResolveDep from '@/react/use-resolve-dep';
+import SuspenseWrapper from '@/react/__tests__/suspense-wrapper';
 
 describe('useResolveDep()', () => {
   it('should trigger suspense and return resolved dependency when ready', async () => {

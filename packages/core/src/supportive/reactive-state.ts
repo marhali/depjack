@@ -1,4 +1,4 @@
-import createPubSub from '@depjack/core/supportive/pub-sub';
+import createPubSub from '@/core/supportive/pub-sub';
 
 /**
  * Represents a tracked state of key / value pairs.

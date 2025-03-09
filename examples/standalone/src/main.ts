@@ -1,4 +1,4 @@
-import myDepsRuntime from '~/examples/standalone/bootstrap/my-deps-runtime';
+import myDepsRuntime from '~/standalone/bootstrap/my-deps-runtime';
 
 await myDepsRuntime.bootstrap();
 

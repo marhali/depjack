@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import createPubSub, { type PubSub } from '@depjack/core/supportive/pub-sub';
+import createPubSub, { type PubSub } from '@/core/supportive/pub-sub';
 
 describe('pub-sub', () => {
   describe('createPubSub()', () => {

@@ -1,4 +1,4 @@
-import type { CrudRepository } from '~/examples/standalone/repository/crud-repository';
+import type { CrudRepository } from '~/standalone/repository/crud-repository';
 
 export type EmployeeEntity = {
   id: string;

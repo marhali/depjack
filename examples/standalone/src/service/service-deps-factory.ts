@@ -1,12 +1,11 @@
-import type { PartialDepsFactory } from '@depjack/core/factory';
-import type { MyDeps } from '~/examples/standalone/bootstrap/my-deps';
-import type myDepsDefinition from '~/examples/standalone/bootstrap/my-deps-definition';
-import type { ServiceDeps } from '~/examples/standalone/service/service-deps';
-import fromModuleFactory from '@depjack/core/factory/from-module-factory';
+import { type PartialDepsFactory, fromModuleFactory } from '@depjack/core';
+import type { MyDeps } from '~/standalone/bootstrap/my-deps';
+import type myDepsDefinition from '~/standalone/bootstrap/my-deps-definition';
+import type { ServiceDeps } from '~/standalone/service/service-deps';
 
 const serviceDepsFactory = {
-  'service.employee': fromModuleFactory(() => import('~/examples/standalone/service/employee-service-impl')),
-  'service.department': fromModuleFactory(() => import('~/examples/standalone/service/department-service-impl')),
+  'service.employee': fromModuleFactory(() => import('~/standalone/service/employee-service-impl')),
+  'service.department': fromModuleFactory(() => import('~/standalone/service/department-service-impl')),
 } satisfies PartialDepsFactory<MyDeps, typeof myDepsDefinition, ServiceDeps>;
 
 export default serviceDepsFactory;

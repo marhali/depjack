@@ -1,14 +1,11 @@
-import type { PartialDepsFactory } from '@depjack/core/factory';
-import type { MyDeps } from '~/examples/standalone/bootstrap/my-deps';
-import type myDepsDefinition from '~/examples/standalone/bootstrap/my-deps-definition';
-import type { RepositoryDeps } from '~/examples/standalone/repository/repository-deps';
-import fromModuleFactory from '@depjack/core/factory/from-module-factory';
+import { type PartialDepsFactory, fromModuleFactory } from '@depjack/core';
+import type { MyDeps } from '~/standalone/bootstrap/my-deps';
+import type myDepsDefinition from '~/standalone/bootstrap/my-deps-definition';
+import type { RepositoryDeps } from '~/standalone/repository/repository-deps';
 
 const repositoryDepsFactory = {
-  'repository.employee': fromModuleFactory(() => import('~/examples/standalone/repository/employee-repository-impl')),
-  'repository.department': fromModuleFactory(
-    () => import('~/examples/standalone/repository/department-repository-impl'),
-  ),
+  'repository.employee': fromModuleFactory(() => import('~/standalone/repository/employee-repository-impl')),
+  'repository.department': fromModuleFactory(() => import('~/standalone/repository/department-repository-impl')),
 } satisfies PartialDepsFactory<MyDeps, typeof myDepsDefinition, RepositoryDeps>;
 
 export default repositoryDepsFactory;

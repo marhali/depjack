@@ -1,4 +1,4 @@
-import type { Deps, DepsKey, DepsInstance, DepsLazyInstance } from '@depjack/core/definition';
+import type { Deps, DepsKey, DepsInstance, DepsLazyInstance } from '@/core/definition';
 
 /**
  * Represents the state of a deps runtime.

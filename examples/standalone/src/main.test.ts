@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import myDepsRuntime from '~/examples/standalone/bootstrap/my-deps-runtime';
-import { AuthClientImpl } from '~/examples/standalone/client/auth-client-impl';
-import { DepartmentServiceImpl } from '~/examples/standalone/service/department-service-impl';
+import myDepsRuntime from '~/standalone/bootstrap/my-deps-runtime';
+import { AuthClientImpl } from '~/standalone/client/auth-client-impl';
+import { DepartmentServiceImpl } from '~/standalone/service/department-service-impl';
 
 describe('main', () => {
   beforeAll(async () => {

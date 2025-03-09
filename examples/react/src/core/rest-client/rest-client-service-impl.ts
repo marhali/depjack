@@ -1,10 +1,10 @@
-import type { DepFactory } from '@depjack/core/factory';
-import type { RestClientService } from '~/examples/react/core/rest-client/rest-client-service';
-import type { RootDeps } from '~/examples/react/bootstrap/root-deps';
-import type { EnvironmentService } from '~/examples/react/core/environment/environment-service';
-import type { AuthenticationService } from '~/examples/react/core/authentication/authentication-service';
-import type rootDepsDefinition from '~/examples/react/bootstrap/root-deps-definition';
-import sleep from '~/examples/react/core/util/sleep';
+import type { DepFactory } from '@depjack/core';
+import type { RestClientService } from '~/react/core/rest-client/rest-client-service';
+import type { RootDeps } from '~/react/bootstrap/root-deps';
+import type { EnvironmentService } from '~/react/core/environment/environment-service';
+import type { AuthenticationService } from '~/react/core/authentication/authentication-service';
+import type rootDepsDefinition from '~/react/bootstrap/root-deps-definition';
+import sleep from '~/react/core/util/sleep';
 
 export class RestClientServiceImpl implements RestClientService {
   constructor(

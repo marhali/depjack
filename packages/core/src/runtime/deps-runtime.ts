@@ -1,5 +1,5 @@
-import type { Deps, DepsKey } from '@depjack/core/definition';
-import type { DepsState } from '@depjack/core/runtime/deps-state';
+import type { Deps, DepsKey } from '@/core/definition';
+import type { DepsState } from '@/core/runtime/deps-state';
 
 /** Represents a dependency runtime that is capable of resolving and caching dependencies. */
 export interface DepsRuntime<TDeps extends Deps> {

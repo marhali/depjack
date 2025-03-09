@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import BootstrapFallback from '~/examples/react/bootstrap/presentation/bootstrap-fallback';
-import BootstrapLoader from '~/examples/react/bootstrap/presentation/bootstrap-loader';
+import BootstrapFallback from '~/react/bootstrap/presentation/bootstrap-fallback';
+import BootstrapLoader from '~/react/bootstrap/presentation/bootstrap-loader';
 
 function Bootstrap() {
   return (

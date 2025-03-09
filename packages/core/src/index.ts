@@ -1,3 +1,3 @@
-export * from '@depjack/core/definition';
-export * from '@depjack/core/factory';
-export * from '@depjack/core/runtime';
+export * from '@/core/definition';
+export * from '@/core/factory';
+export * from '@/core/runtime';
