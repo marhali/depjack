@@ -94,6 +94,18 @@ describe('DepsRuntimeImpl', () => {
       expect(runtime.getInitialized()).toStrictEqual([]);
     });
   });
+  describe('before bootstrap', () => {
+    it('should throw exception if resolve() function is called', () => {
+      expect(() => runtime.resolve('alpha')).toThrowError(
+        new Error('Illegal access on non-bootstrapped runtime. Please make sure to bootstrap this runtime first.'),
+      );
+    });
+    it('should throw exception if resolveSync() function is called', () => {
+      expect(() => runtime.resolveSync('alpha')).toThrowError(
+        new Error('Illegal access on non-bootstrapped runtime. Please make sure to bootstrap this runtime first.'),
+      );
+    });
+  });
   describe('bootstrap', () => {
     let initializingListener: Mock;
     let instancesListener: Mock;

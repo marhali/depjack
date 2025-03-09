@@ -33,10 +33,13 @@ class DepsRuntimeImpl<TDeps extends Deps> implements DepsRuntime<TDeps> {
   }
 
   resolve = <TDepsKey extends DepsKey<TDeps>>(key: TDepsKey): Promise<TDeps[TDepsKey]> => {
+    this.internalEnsureIsBootstrapped();
     return this.internalResolveDep(key);
   };
 
   resolveSync = <TDepsKey extends DepsKey<TDeps>>(key: TDepsKey): TDeps[TDepsKey] => {
+    this.internalEnsureIsBootstrapped();
+
     const instance = this.state.get('instances')[key];
 
     if (!instance) {
@@ -167,6 +170,12 @@ class DepsRuntimeImpl<TDeps extends Deps> implements DepsRuntime<TDeps> {
     );
 
     return instance;
+  };
+
+  private internalEnsureIsBootstrapped = () => {
+    if (!this.isBootstrapped()) {
+      throw new Error('Illegal access on non-bootstrapped runtime. Please make sure to bootstrap this runtime first.');
+    }
   };
 }
 
