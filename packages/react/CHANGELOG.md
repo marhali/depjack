@@ -1,5 +1,12 @@
 # @depjack/react
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [872c2f7]
+  - @depjack/core@1.0.3
+
 ## 1.0.2
 
 ### Patch Changes

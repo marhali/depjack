@@ -1,7 +1,7 @@
 {
   "name": "@depjack/react",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Depjack adapter for React specific features.",
   "author": "Marcel Haßlinger <contact@marhali.de>",
   "license": "MIT",
