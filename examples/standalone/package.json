@@ -34,7 +34,7 @@
     "@vitest/coverage-v8": "3.0.7",
     "vite": "6.2.0",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.0.7"
+    "vitest": "3.0.8"
   },
   "dependencies": {
     "@depjack/core": "workspace:*"
