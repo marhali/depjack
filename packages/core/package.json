@@ -27,20 +27,10 @@
     "dist"
   ],
   "exports": {
-    "./defintion": {
-      "types": "./dist/definition.d.ts",
-      "import": "./dist/definition.js",
-      "require": "./dist/definition.cjs"
-    },
-    "./factory": {
-      "types": "./dist/factory.d.ts",
-      "import": "./dist/factory.js",
-      "require": "./dist/factory.cjs"
-    },
-    "./runtime": {
-      "types": "./dist/runtime.d.ts",
-      "import": "./dist/runtime.js",
-      "require": "./dist/runtime.cjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "scripts": {
