@@ -12,9 +12,9 @@ Ideal for development projects in which the domain core is separated from other 
 
 ## Features
 
-- Full type support for dependency definition & resolution
+- Full type support for dependency definition & resolution.
 - Definition of non-lazy dependencies, which are loaded with the initialization of the runtime environment.
-- Definition of lazy dependencies, which are loaded on-demand (initialization on first request)
+- Definition of lazy dependencies, which are loaded on-demand (initialization on first request).
 - Designed for scalability through module separation and minimal initial overhead.
 - Ready for critical environments as no external dependencies are used.
 
