@@ -24,7 +24,8 @@
     "release": "./scripts/release.sh",
     "lint:all": "pnpm --filter './**' lint",
     "test:all": "pnpm --filter './**' test",
-    "build:all": "pnpm --filter './**' build"
+    "build:all": "pnpm --filter './**' build",
+    "outdated:all": "pnpm --filter './**' outdated"
   },
   "devDependencies": {
     "@changesets/cli": "2.28.1",
