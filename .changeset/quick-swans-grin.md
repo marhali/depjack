@@ -3,4 +3,4 @@
 '@depjack/react': patch
 ---
 
-No changes
+Restructure path aliases
