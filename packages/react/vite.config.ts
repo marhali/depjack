@@ -4,7 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import dtsPlugin from 'vite-plugin-dts';
 
 export default defineConfig({
-  plugins: [tsconfigPaths(), dtsPlugin({ rollupTypes: true })],
+  plugins: [tsconfigPaths(), dtsPlugin({ rollupTypes: true, aliasesExclude: ['@depjack/core'] })],
   build: {
     minify: false,
     lib: {
