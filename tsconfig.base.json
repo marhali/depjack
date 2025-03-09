@@ -27,10 +27,11 @@
 
     /* Path Aliases */
     "paths": {
-      "@depjack/core/*": ["./packages/core/src/*"],
-      "@depjack/react/*": ["./packages/react/src/*"],
-      "~/examples/standalone/*": ["./examples/standalone/src/*"],
-      "~/examples/react/*": ["./examples/react/src/*"]
+      "@depjack/*": ["./packages/*/src/index.ts"],
+      "@/core/*": ["./packages/core/src/*"],
+      "@/react/*": ["./packages/react/src/*"],
+      "~/standalone/*": ["./examples/standalone/src/*"],
+      "~/react/*": ["./examples/react/src/*"],
     }
   }
 }
