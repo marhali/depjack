@@ -1,5 +1,11 @@
 # @depjack/core
 
+## 1.0.3
+
+### Patch Changes
+
+- 872c2f7: Fix package exports entry
+
 ## 1.0.2
 
 ### Patch Changes
