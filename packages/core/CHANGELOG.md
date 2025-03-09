@@ -1,5 +1,11 @@
 # @depjack/core
 
+## 1.0.4
+
+### Patch Changes
+
+- c196571: Throw exception if non-bootstrapped runtime is illegally accessed
+
 ## 1.0.3
 
 ### Patch Changes
