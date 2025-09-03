@@ -22,7 +22,7 @@
     "outDir": "dist",
     "sourceMap": true,
     "declaration": true,
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "baseUrl": ".",
 
     /* Path Aliases */
