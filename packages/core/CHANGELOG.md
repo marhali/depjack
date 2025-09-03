@@ -1,5 +1,11 @@
 # @depjack/core
 
+## 1.0.5
+
+### Patch Changes
+
+- 8887bfe: Update dependencies
+
 ## 1.0.4
 
 ### Patch Changes
