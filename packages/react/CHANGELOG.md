@@ -1,5 +1,14 @@
 # @depjack/react
 
+## 1.0.5
+
+### Patch Changes
+
+- 8887bfe: Specify expected react peer dependencies (>= 19.0.0)
+- 8887bfe: Update dependencies
+- Updated dependencies [8887bfe]
+  - @depjack/core@1.0.5
+
 ## 1.0.4
 
 ### Patch Changes
